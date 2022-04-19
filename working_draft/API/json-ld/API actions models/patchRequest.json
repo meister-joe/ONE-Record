@@ -1,0 +1,35 @@
+{
+  "@type": [
+    "https://onerecord.iata.org/api/PatchRequest"
+  ],
+  "https://onerecord.iata.org/api/PatchRequest#description": "string",
+  "https://onerecord.iata.org/api/PatchRequest#logisticsObjectRef": {
+    "@type": [
+      "https://onerecord.iata.org/api/LogisticsObjectRef"
+    ],
+    "https://onerecord.iata.org/api/LogisticsObjectRef#logisticsObjectId": "string",
+    "https://onerecord.iata.org/api/LogisticsObjectRef#logisticsObjectType": "string",
+    "id": "string"
+  },
+  "https://onerecord.iata.org/api/PatchRequest#operations": [
+    {
+      "@type": [
+        "https://onerecord.iata.org/api/Operation"
+      ],
+      "https://onerecord.iata.org/api/Operation#o": {
+        "@type": [
+          "https://onerecord.iata.org/api/OperationObject"
+        ],
+        "https://onerecord.iata.org/api/OperationObject#datatype": "string",
+        "https://onerecord.iata.org/api/OperationObject#value": "string",
+        "id": "string"
+      },
+      "https://onerecord.iata.org/api/Operation#op": "string",
+      "https://onerecord.iata.org/api/Operation#p": "string",
+      "id": "string"
+    }
+  ],
+  "https://onerecord.iata.org/api/PatchRequest#requestorCompanyIdentifier": "string",
+  "https://onerecord.iata.org/api/PatchRequest#revision": "string",
+  "id": "string"
+}

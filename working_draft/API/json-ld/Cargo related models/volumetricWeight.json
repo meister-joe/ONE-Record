@@ -1,0 +1,25 @@
+{
+
+  "@type": [
+    "https://onerecord.iata.org/cargo/VolumetricWeight"
+  ],
+  "https://onerecord.iata.org/cargo/VolumetricWeight#chargeableWeight": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "https://onerecord.iata.org/cargo/VolumetricWeight#conversionFactor": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "id": "string"
+}

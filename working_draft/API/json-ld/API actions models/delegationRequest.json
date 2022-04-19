@@ -1,0 +1,23 @@
+{
+  "@type": [
+    "https://onerecord.iata.org/api/DelegationRequest"
+  ],
+  "https://onerecord.iata.org/api/DelegationRequest#action": "string",
+  "https://onerecord.iata.org/api/DelegationRequest#operations": [
+    "string"
+  ],
+  "https://onerecord.iata.org/api/DelegationRequest#targetCompanies": [
+    "string"
+  ],
+  "https://onerecord.iata.org/api/DelegationRequest#targetLogisticsObjects": [
+    {
+      "@type": [
+        "https://onerecord.iata.org/api/LogisticsObjectRef"
+      ],
+      "https://onerecord.iata.org/api/LogisticsObjectRef#logisticsObjectId": "string",
+      "https://onerecord.iata.org/api/LogisticsObjectRef#logisticsObjectType": "string",
+      "id": "string"
+    }
+  ],
+  "id": "string"
+}

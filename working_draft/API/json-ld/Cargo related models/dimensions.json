@@ -1,0 +1,43 @@
+{
+
+  "@type": [
+    "https://onerecord.iata.org/cargo/Dimensions"
+  ],
+  "https://onerecord.iata.org/cargo/Dimensions#height": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "https://onerecord.iata.org/cargo/Dimensions#length": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "https://onerecord.iata.org/cargo/Dimensions#volume": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "https://onerecord.iata.org/cargo/Dimensions#width": {
+
+    "@type": [
+      "https://onerecord.iata.org/cargo/Value"
+    ],
+    "https://onerecord.iata.org/cargo/Value#unit": "string",
+    "https://onerecord.iata.org/cargo/Value#value": 0,
+    "id": "string"
+  },
+  "id": "string"
+}
