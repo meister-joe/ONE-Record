@@ -1,0 +1,207 @@
+# Project information
+site_name: ONE Record Specification
+site_author: IATA
+site_description: >-
+  ONE Record specification defines a standard, programming language-agnostic interface
+  for the interaction with the ONE Record Web API and Data Model.
+site_url: 'https://iata-cargo.github.io/ONE-Record/'
+
+# Copyright
+copyright: >
+  <img alt="Made with love for Digital Cargo" style="vertical-align: bottom" src=https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20for-Digital%20Cargo-informational" />&nbsp;&nbsp;|&nbsp;&nbsp;Copyright © 2023 IATA
+
+# Content
+nav:
+    - General information:
+      - Introduction: 'index.md'
+      - Getting Started with ONE Record: 'General/Getting-Started-with-ONE-Record.md'
+      - Resources: 'General/resources.md'
+      - Governance: 'General/governance.md'
+      - Community: 'General/community.md'
+      - License: 'General/license.md'
+      - Release:
+        - Release note: 'General/release-note.md'
+        - Changelog: 'General/changelog.md'
+    - API Specification:
+      - Introduction: 'API-Security/index.md'
+      - Concepts: 'API-Security/concepts.md'
+      - Implementation Guidelines: 'API-Security/implementation-guidelines.md'
+      - Core Resources:
+          - Overview: 'API-Security/api-features.md'
+          - Server Information: 'API-Security/server-information.md'
+          - Logistics Objects: 'API-Security/logistics-objects.md'
+          - Logistics Events: 'API-Security/logistics-events.md'
+          - Subscriptions: 'API-Security/subscriptions.md'
+          - Notifications: 'API-Security/notifications.md'
+          - Action Requests: 'API-Security/action-requests.md'
+          - Access Delegations: 'API-Security/access-delegations.md'
+          - Verifications: 'API-Security/verifications.md'
+      - Security:
+          - Overview: 'API-Security/security/security-overview.md'
+          - Transport Layer Security: 'API-Security/security/authn-transport-layer.md'
+          - Authentication & Authorization : 'API-Security/security/authn-application-layer.md'
+          - Access Control: 'API-Security/security/access-control.md'
+      - Reference:
+          - Glossary: 'API-Security/glossary.md'
+          - Bibliography: 'API-Security/bibliography.md'
+      - Supplementary Material:
+          - EDI Integration: 'API-Security/supplementary-materials/edi-integration.md'
+      - Development:
+          - Changelog: 'API-Security/changelog.md'
+    - Data Model:
+      - Introduction: 'Data-Model/index.md'
+      - Concepts: 'Data-Model/concepts.md'
+      - Design Principles: 'Data-Model/designprinciples.md'
+      - Implementation Guidelines: 'Data-Model/implementation-guidelines.md'
+      - Governance: 'Data-Model/governance.md'
+      - Core Resources:
+        - Overview: 'Data-Model/features.md'
+        - Activity Model: 'Data-Model/activity-model.md'
+        - Code Lists: 'Data-Model/code-lists.md'
+        - Skeleton indicator: 'Data-Model/skeleton.md'
+      - Business requirements:
+        - Overview: 'Data-Model/businessrequirements.md'
+        - Shipper letter of instriction: 'Data-Model/sli.md'
+        - ULD Tracking: 'Data-Model/uldtracking.md'
+        - CO2 Emission: 'Data-Model/co2emissions.md'
+        - Interactive Cargo: 'Data-Model/ic.md'
+        - Dangerous Goods: 'Data-Model/dg.md'
+        - Pharmaceutical Products: 'Data-Model/pharma.md'
+        - Live Animals: 'Data-Model/la.md'
+        - Air Waybill: 'Data-Model/waybill.md'
+        - Distribution: 'Data-Model/distribution.md'
+        - Consignment Security Declaration: 'Data-Model/csd.md'
+        - Cargo Receipt: 'Data-Model/cargo-receipt.md'
+    - Data Orchestration:
+      - Introduction: 'Orchestration/index.md'
+      - CargoXML Mapping: 'Orchestration/orchestration-cxml.md'
+      - XFWB Mapping: 'Orchestration/xfwb.md'
+      - OCI line Mapping: 'Orchestration/orchestration-oci.md'
+#      - PLACI implementation: 'Orchestration/placi.md'
+      - MOP mapping:
+        - Introduction: 'Orchestration/orchestration-mop.md'
+        - P01 - Book Shipment: 'Orchestration/orchestration-01.md'
+        - P02 - Arrange handover from Shipper: 'Orchestration/orchestration-02.md'
+        - Movement from Shipper to Forwarder: 'Orchestration/orchestration-mvt01.md'
+        - P03 - Receive freight at forwarder warehouse: 'Orchestration/orchestration-03.md'
+        - P04 - Prepare transfer to forwarder - Downstream warehouse or airline: 'Orchestration/orchestration-04.md'
+        - Movement within Fowarder warehouses: 'Orchestration/orchestration-mvt02.md'
+        - P05 - Prepare export shipments: 'Orchestration/orchestration-05.md'
+        - P06 - Prepare receipt into carrier domain: 'Orchestration/orchestration-06.md'
+        - Movement from Forwarder hub to Carrier domain: 'Orchestration/orchestration-mvt03.md'
+        - P07 - Receive shipment at carrier domain: 'Orchestration/orchestration-07.md'
+        - P08 - Accept shipment as ready for carriage: 'Orchestration/orchestration-08.md'
+        - P09 - Prepare freight for transport: 'Orchestration/orchestration-09.md'
+        - P10 - Shipment to flight, load and depart: 'Orchestration/orchestration-10.md'
+        - P11 - Information exchange and flight: 'Orchestration/orchestration-11.md'
+        - P12 - Arrive flight, unload and dispatch shipment to warehouse: 'Orchestration/orchestration-12.md'
+        - P13 - Check in shipment: 'Orchestration/orchestration-13.md'
+        - P14 - Prepare shipment for delivery: 'Orchestration/orchestration-14.md'
+        - P15 - Customs clearance: 'Orchestration/orchestration-15.md'
+        - P16 - Handover freight to forwarder: 'Orchestration/orchestration-16.md'
+        - Movement from destination carrier domain to forwarder warehouse: 'Orchestration/orchestration-mvt04.md'
+        - P17 - Receive shipment at forwarder warehouse: 'Orchestration/orchestration-17.md'
+        - P18 - Movement between hub and branch facility: 'Orchestration/orchestration-18.md'
+        - P19 - Receive shipment at forwarder branch facility: 'Orchestration/orchestration-19.md'
+        - P20 - Prepare handover to consignee: 'Orchestration/orchestration-20.md'
+        - Movement from forwarder branch facility to consignee location: 'Orchestration/orchestration-mvt05.md'
+        - P21 Deliver, obtain POD and conclude cycle: 'Orchestration/orchestration-21.md'
+    - Tools:
+      - Introduction: 'Tools/index.md'
+      - Ontology Visualizer: 'Tools/ontology-visualizer.md'
+      - Unit Test Suite: 'Tools/unit-tests.md'
+# Theme Configuration
+theme:
+  name: material
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    - navigation.expand
+    - navigation.footer
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    # - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  logo: img/logo.png
+  favicon: img/favicon.ico
+
+# Extra
+extra:
+  version:
+    provider: mike
+    alias: true
+    default:
+    - stable
+  generator: true
+
+
+# Markdown Extensions
+markdown_extensions:
+  - attr_list
+  - toc:
+      permalink: true
+      baselevel: 2
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+      base_path: docs
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.mark
+  - footnotes
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_css:
+  - css/extra.css
+
+extra_javascript:
+  - js/extra.js
+
+# Github Repository Setup
+repo_name: IATA-Cargo/ONE-Record
+repo_url: https://github.com/IATA-Cargo/ONE-Record
+edit_uri: edit/master/Documentation_website/docs/

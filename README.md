@@ -8,7 +8,7 @@ The vision for ONE Record is an end-to-end digital logistics and transport suppl
 
 ONE Record is a standard for data sharing and creates a single record view of the shipment. This standard defines a common data model for the data that is shared via standardized and secured web API.
 
-You can find further information about ONE Record standard on the [IATA dedicated webpage](https://www.iata.org/en/programs/cargo/e/one-record/) and on the [ONE Record Developer Portal](https://onerecord.iata.org/).
+You can find further information about ONE Record standard on the [IATA dedicated webpage](https://www.iata.org/en/programs/cargo/e/one-record/) and on the [ONE Record Specification Portal](https://iata-cargo.github.io/ONE-Record/).
 
 # Content
 This repository contains the data model, ontology, API & Security specifications of ONE Record.
@@ -16,9 +16,7 @@ This repository contains the data model, ontology, API & Security specifications
 >Please refer to the **working_draft** folder for the latest version.
 
 ## Structure of the repository
-- **CSC_adopted_March_2019** : ONE Record standard version adopted by CSC in March 2019;
-- **March-2020-standard-COTB-endorsed** : ONE Record standard version endorsed by the Cargo Operations & Technology Board (COTB) on March 2020;
-- **November-2020-standard-COTB-endorsed** : ONE Record standard version endorsed by the Cargo Operations & Technology Board (COTB) in November 2020;
+- **XXXX-XX-standard** folders relate to ONE Record releases. Detailed status of each release (Proposal, Endorsed or not by COTB/CSC) are in the readme of each folder;
 - **working_draft** : latest version of ONE Record standard.
 
 ## Structure of the working_draft folder
