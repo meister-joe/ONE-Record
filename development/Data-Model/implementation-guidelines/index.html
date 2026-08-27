@@ -15,14 +15,17 @@
         <link rel="canonical" href="https://iata-cargo.github.io/ONE-Record/development/Data-Model/implementation-guidelines/">
       
       
-        <link rel="prev" href="../designprinciples/">
+        <link rel="prev" href="../code-lists/">
       
       
-        <link rel="next" href="../governance/">
+        <link rel="next" href="../skeleton/">
+      
+      
+        
       
       
       <link rel="icon" href="../../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -30,10 +33,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -60,7 +63,6 @@
 
     
     
-    
   </head>
   
   
@@ -80,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#paper-transport-documents-in-one-record" class="md-skip">
+        <a href="#handling-of-dummy-and-placeholder-values" class="md-skip">
           Skip to content
         </a>
       
@@ -219,7 +221,7 @@
         <a href="https://github.com/IATA-Cargo/ONE-Record" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     IATA-Cargo/ONE-Record
@@ -387,7 +389,7 @@
       <a href="https://github.com/IATA-Cargo/ONE-Record" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     IATA-Cargo/ONE-Record
@@ -408,6 +410,8 @@
       
         
           
+        
+      
         
       
         
@@ -446,9 +450,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     General information
+  
+
     
   </span>
+  
   
 
             </a>
@@ -463,7 +472,11 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
-            General information
+            
+  
+    General information
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -481,9 +494,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Getting Started with ONE Record
+  
+
     
   </span>
+  
   
 
       </a>
@@ -504,9 +522,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Resources
+  
+
     
   </span>
+  
   
 
       </a>
@@ -527,9 +550,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Governance
+  
+
     
   </span>
+  
   
 
       </a>
@@ -550,9 +578,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Community
+  
+
     
   </span>
+  
   
 
       </a>
@@ -573,9 +606,42 @@
   
   
   <span class="md-ellipsis">
+    
+  
     License
+  
+
     
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../General/privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Privacy and Cookies
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -612,26 +678,35 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_7" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_8" >
         
           
-          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
+    
+  
     Release
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1_7">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
             <span class="md-nav__icon md-icon"></span>
-            Release
+            
+  
+    Release
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -647,9 +722,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Release note
+  
+
     
   </span>
+  
   
 
       </a>
@@ -670,9 +750,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Changelog
+  
+
     
   </span>
+  
   
 
       </a>
@@ -747,9 +832,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     API Specification
+  
+
     
   </span>
+  
   
 
             </a>
@@ -764,7 +854,11 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            API Specification
+            
+  
+    API Specification
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -782,9 +876,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Concepts
+  
+
     
   </span>
+  
   
 
       </a>
@@ -805,9 +904,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Implementation Guidelines
+  
+
     
   </span>
+  
   
 
       </a>
@@ -866,9 +970,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Core Resources
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -877,7 +986,11 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
-            Core Resources
+            
+  
+    Core Resources
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -893,9 +1006,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Overview
+  
+
     
   </span>
+  
   
 
       </a>
@@ -916,9 +1034,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Server Information
+  
+
     
   </span>
+  
   
 
       </a>
@@ -939,9 +1062,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Logistics Objects
+  
+
     
   </span>
+  
   
 
       </a>
@@ -962,9 +1090,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Logistics Events
+  
+
     
   </span>
+  
   
 
       </a>
@@ -985,9 +1118,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Subscriptions
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1008,9 +1146,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Notifications
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1031,9 +1174,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Action Requests
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1054,9 +1202,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Access Delegations
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1077,9 +1230,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Verifications
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1136,9 +1294,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Security
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1147,7 +1310,11 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
-            Security
+            
+  
+    Security
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1163,9 +1330,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Overview
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1186,9 +1358,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Transport Layer Security
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1209,9 +1386,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Authentication & Authorization
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1232,9 +1414,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Access Control
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1287,9 +1474,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Reference
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1298,7 +1490,11 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_6">
             <span class="md-nav__icon md-icon"></span>
-            Reference
+            
+  
+    Reference
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1314,9 +1510,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Glossary
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1337,9 +1538,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Bibliography
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1390,9 +1596,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Supplementary Material
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1401,7 +1612,11 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_7">
             <span class="md-nav__icon md-icon"></span>
-            Supplementary Material
+            
+  
+    Supplementary Material
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1417,9 +1632,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     EDI Integration
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1470,9 +1690,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Development
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
@@ -1481,7 +1706,11 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2_8">
             <span class="md-nav__icon md-icon"></span>
-            Development
+            
+  
+    Development
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1497,9 +1726,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Changelog
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1536,8 +1770,6 @@
       
         
           
-        
-      
         
       
         
@@ -1575,9 +1807,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Data Model
+  
+
     
   </span>
+  
   
 
             </a>
@@ -1592,7 +1829,11 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Data Model
+            
+  
+    Data Model
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1610,9 +1851,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Concepts
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1633,9 +1879,223 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Design Principles
+  
+
     
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paperdocs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Paper versus ONE Record
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../governance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Governance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Resources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../activity-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Activity Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../code-lists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Lists
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -1663,9 +2123,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Implementation Guidelines
+  
+
     
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -1676,9 +2141,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Implementation Guidelines
+  
+
     
   </span>
+  
   
 
       </a>
@@ -1697,49 +2167,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#paper-transport-documents-in-one-record" class="md-nav__link">
+  <a href="#handling-of-dummy-and-placeholder-values" class="md-nav__link">
     <span class="md-ellipsis">
-      Paper transport documents in ONE Record
+      
+        Handling of dummy and placeholder values
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Paper transport documents in ONE Record">
+    <nav class="md-nav" aria-label="Handling of dummy and placeholder values">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#master-awb" class="md-nav__link">
+  <a href="#principle-omit-rather-than-fabricate" class="md-nav__link">
     <span class="md-ellipsis">
-      Master AWB
+      
+        Principle: omit rather than fabricate
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Master AWB">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#digital-awb-approach" class="md-nav__link">
+  <a href="#guidance-per-scenario" class="md-nav__link">
     <span class="md-ellipsis">
-      Digital AWB approach
+      
+        Guidance per scenario
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Digital AWB approach">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#pieces-ulds-in-awb-wording" class="md-nav__link">
+  <a href="#handling-mandatory-fields-during-message-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      Pieces / ULDs in AWB wording
+      
+        Handling mandatory fields during message conversion
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Pieces / ULDs in AWB wording">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#42-house-awb" class="md-nav__link">
+  <a href="#skeletons-and-partial-data" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2. House AWB
+      
+        Skeletons and partial data
+      
     </span>
   </a>
   
@@ -1749,14 +2226,138 @@
     </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#data-ownership-object-reuse-and-the-authoritative-source-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data ownership, object reuse, and the authoritative source principle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data ownership, object reuse, and the authoritative source principle">
+      <ul class="md-nav__list">
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#reuse-of-logistics-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reuse of Logistics Objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-authoritative-source-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The authoritative source principle
+      
+    </span>
+  </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timestamping-events-and-audit-trail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timestamping, events, and audit trail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handling-of-nulls-empty-strings-and-boolean-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling of nulls, empty strings, and boolean defaults
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Handling of nulls, empty strings, and boolean defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nulls-and-empty-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nulls and empty strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-otheridentifier-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The OtherIdentifier object
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The OtherIdentifier object">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale-and-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale and examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
   
 </li>
         
@@ -1781,522 +2382,19 @@
   
   
     <li class="md-nav__item">
-      <a href="../governance/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Governance
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    Core Resources
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_6">
-            <span class="md-nav__icon md-icon"></span>
-            Core Resources
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../features/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Overview
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../activity-model/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Activity Model
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../code-lists/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Code Lists
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../skeleton/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
+    
+  
     Skeleton indicator
+  
+
     
   </span>
   
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    Business requirements
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_7">
-            <span class="md-nav__icon md-icon"></span>
-            Business requirements
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../businessrequirements/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Overview
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../sli/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Shipper letter of instriction
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../uldtracking/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ULD Tracking
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../co2emissions/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    CO2 Emission
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../ic/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Interactive Cargo
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../dg/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Dangerous Goods
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pharma/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Pharmaceutical Products
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../la/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Live Animals
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../waybill/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Air Waybill
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../distribution/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Distribution
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../csd/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Consignment Security Declaration
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../cargo-receipt/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Cargo Receipt
-    
-  </span>
   
 
       </a>
@@ -2331,8 +2429,6 @@
       
         
           
-        
-      
         
       
         
@@ -2365,9 +2461,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Data Orchestration
+  
+
     
   </span>
+  
   
 
             </a>
@@ -2382,11 +2483,79 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Data Orchestration
+            
+  
+    Data Orchestration
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
               
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cargo-XML Mapping
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cargo-XML Mapping
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -2400,9 +2569,14 @@
   
   
   <span class="md-ellipsis">
-    CargoXML Mapping
+    
+  
+    Cargo-XML Mapping
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2423,9 +2597,42 @@
   
   
   <span class="md-ellipsis">
+    
+  
     XFWB Mapping
+  
+
     
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Orchestration/xfsu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XFSU Mapping
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -2446,12 +2653,449 @@
   
   
   <span class="md-ellipsis">
+    
+  
     OCI line Mapping
+  
+
     
   </span>
   
+  
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business requirements and use cases
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Business requirements and use cases
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Orchestration/usecase/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introduction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../waybill/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Air Waybill
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../csd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Consignment Security Declaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cargo-receipt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cargo Receipt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shipper letter of instruction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dg/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dangerous Goods
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../distribution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Distribution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../la/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Live Animals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pharma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pharmaceutical Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../uldtracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ULD Tracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../co2emissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CO2 Emission
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactive Cargo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2535,26 +3179,35 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
         
           
-          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
+    
+  
     MOP mapping
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
             <span class="md-nav__icon md-icon"></span>
-            MOP mapping
+            
+  
+    MOP mapping
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -2570,9 +3223,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Introduction
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2593,9 +3251,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P01 - Book Shipment
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2616,9 +3279,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P02 - Arrange handover from Shipper
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2639,9 +3307,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Movement from Shipper to Forwarder
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2662,9 +3335,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P03 - Receive freight at forwarder warehouse
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2685,9 +3363,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P04 - Prepare transfer to forwarder - Downstream warehouse or airline
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2708,9 +3391,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Movement within Fowarder warehouses
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2731,9 +3419,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P05 - Prepare export shipments
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2754,9 +3447,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P06 - Prepare receipt into carrier domain
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2777,9 +3475,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Movement from Forwarder hub to Carrier domain
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2800,9 +3503,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P07 - Receive shipment at carrier domain
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2823,9 +3531,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P08 - Accept shipment as ready for carriage
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2846,9 +3559,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P09 - Prepare freight for transport
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2869,9 +3587,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P10 - Shipment to flight, load and depart
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2892,9 +3615,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P11 - Information exchange and flight
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2915,9 +3643,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P12 - Arrive flight, unload and dispatch shipment to warehouse
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2938,9 +3671,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P13 - Check in shipment
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2961,9 +3699,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P14 - Prepare shipment for delivery
+  
+
     
   </span>
+  
   
 
       </a>
@@ -2984,9 +3727,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P15 - Customs clearance
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3007,9 +3755,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P16 - Handover freight to forwarder
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3030,9 +3783,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Movement from destination carrier domain to forwarder warehouse
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3053,9 +3811,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P17 - Receive shipment at forwarder warehouse
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3076,9 +3839,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P18 - Movement between hub and branch facility
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3099,9 +3867,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P19 - Receive shipment at forwarder branch facility
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3122,9 +3895,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P20 - Prepare handover to consignee
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3145,9 +3923,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Movement from forwarder branch facility to consignee location
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3168,9 +3951,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     P21 Deliver, obtain POD and conclude cycle
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3235,9 +4023,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Tools
+  
+
     
   </span>
+  
   
 
             </a>
@@ -3252,7 +4045,11 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Tools
+            
+  
+    Tools
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -3270,9 +4067,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Ontology Visualizer
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3293,9 +4095,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Unit Test Suite
+  
+
     
   </span>
+  
   
 
       </a>
@@ -3336,49 +4143,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#paper-transport-documents-in-one-record" class="md-nav__link">
+  <a href="#handling-of-dummy-and-placeholder-values" class="md-nav__link">
     <span class="md-ellipsis">
-      Paper transport documents in ONE Record
+      
+        Handling of dummy and placeholder values
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Paper transport documents in ONE Record">
+    <nav class="md-nav" aria-label="Handling of dummy and placeholder values">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#master-awb" class="md-nav__link">
+  <a href="#principle-omit-rather-than-fabricate" class="md-nav__link">
     <span class="md-ellipsis">
-      Master AWB
+      
+        Principle: omit rather than fabricate
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Master AWB">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#digital-awb-approach" class="md-nav__link">
+  <a href="#guidance-per-scenario" class="md-nav__link">
     <span class="md-ellipsis">
-      Digital AWB approach
+      
+        Guidance per scenario
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Digital AWB approach">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#pieces-ulds-in-awb-wording" class="md-nav__link">
+  <a href="#handling-mandatory-fields-during-message-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      Pieces / ULDs in AWB wording
+      
+        Handling mandatory fields during message conversion
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Pieces / ULDs in AWB wording">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
-  <a href="#42-house-awb" class="md-nav__link">
+  <a href="#skeletons-and-partial-data" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2. House AWB
+      
+        Skeletons and partial data
+      
     </span>
   </a>
   
@@ -3388,14 +4202,138 @@
     </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#data-ownership-object-reuse-and-the-authoritative-source-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data ownership, object reuse, and the authoritative source principle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data ownership, object reuse, and the authoritative source principle">
+      <ul class="md-nav__list">
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#reuse-of-logistics-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reuse of Logistics Objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-authoritative-source-principle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The authoritative source principle
+      
+    </span>
+  </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#timestamping-events-and-audit-trail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timestamping, events, and audit trail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handling-of-nulls-empty-strings-and-boolean-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling of nulls, empty strings, and boolean defaults
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Handling of nulls, empty strings, and boolean defaults">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nulls-and-empty-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nulls and empty strings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boolean-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Boolean defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-otheridentifier-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The OtherIdentifier object
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The OtherIdentifier object">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rationale-and-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rationale and examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
   
 </li>
         
@@ -3414,6 +4352,7 @@
           
           
             <div class="md-content" data-md-component="content">
+              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -3438,34 +4377,130 @@
 
   <h1>Implementation Guidelines</h1>
 
-<h2 id="paper-transport-documents-in-one-record">Paper transport documents in ONE Record<a class="headerlink" href="#paper-transport-documents-in-one-record" title="Permanent link">&para;</a></h2>
-<p>The general concept of legal entities like MAWB or HAWB in ONE Record does not differ from the established concepts in term of legal preconditions or validity. All the legal requirements remain in place and must be fulfilled. But because of the architecture of ONE Record, changes in the practical management of data are required. In the context of ONE Record, a legal entity like the AWB has the following characteristics:
-- A defined set of data fields, as described in the corresponding Logistics Object</p>
-<p>These data fields are either attributes (e.g. type of AWB) or defined as links to other LOs in the data model (e.g. Booking or Shipment).</p>
+<p>This page provides general guidelines for implementers of the ONE Record data model. It complements the ontology documentation and the use-case-specific pages by addressing cross-cutting concerns that apply regardless of the business process or message type being implemented.</p>
+<h2 id="handling-of-dummy-and-placeholder-values">Handling of dummy and placeholder values<a class="headerlink" href="#handling-of-dummy-and-placeholder-values" title="Permanent link">&para;</a></h2>
+<p>In legacy cargo messaging standards (CIMP and CXML), dummy or placeholder values are commonly used when a required field has no meaningful data to provide at the time of transmission or when the cardinality of a data field is different from one standard to another. Typical examples include:</p>
 <ul>
-<li>From defined owners</li>
+<li><code>XXX</code> as a placeholder airport or location code</li>
+<li><code>TBD</code>, <code>N/A</code>, or <code>.</code> as placeholder text in mandatory free-text fields</li>
+<li>Arbitrary future dates used to satisfy mandatory date fields e.g. <code>12/99</code> used for expiry date</li>
 </ul>
-<p>Due to legal requirements, some fields must be provided by the accountable party. E.g. in case of MAWB, the forwarder must be owner of most data fields, although some data fields (like the transport segments with the planned routing) are owned by the carrier, and some are owned by shippers (e.g. the commodity information).</p>
+<p>These practices emerged as workarounds for message-level mandatory field constraints that do not exist in the same way in ONE Record.</p>
+<h3 id="principle-omit-rather-than-fabricate">Principle: omit rather than fabricate<a class="headerlink" href="#principle-omit-rather-than-fabricate" title="Permanent link">&para;</a></h3>
+<p>ONE Record is built on linked data principles. <strong>A property that has no meaningful value should simply be omitted</strong> from the Logistics Object, rather than populated with a dummy or placeholder value. Consuming systems must be designed to handle the absence of optional properties gracefully.</p>
+<p>Populating a field with a dummy value is actively harmful in ONE Record because:</p>
 <ul>
-<li>For a special purpose (“e.g. Master Air Waybill”)</li>
+<li>It pollutes the data with false information that downstream systems may consume and act upon.</li>
+<li>It breaks the semantics of the ontology — a <code>location</code> of <code>XXX</code> has a specific, incorrect meaning.</li>
+<li>It undermines the trustworthiness of the data, which is one of the core value propositions of ONE Record.</li>
 </ul>
-<p>The traditional paper documents fulfil a defined legal purpose. To fulfil this purpose is the only function of the correlating Logistics Object (e.g. “AWB Logistics Object”).</p>
+<h3 id="guidance-per-scenario">Guidance per scenario<a class="headerlink" href="#guidance-per-scenario" title="Permanent link">&para;</a></h3>
+<p>There are multiple scenarios, in a very few cases guidelines were provided in the past but most of the times each Airline have their own rules. Below a few examples:</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Legacy messaging habit</th>
+<th>ONE Record approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Location not yet determined</td>
+<td>Use <code>XXX</code></td>
+<td>Omit the location property or link to a partial <code>Location</code> object with only the known attributes</td>
+</tr>
+<tr>
+<td>Goods description not available</td>
+<td>Use <code>.</code> or <code>N/A</code></td>
+<td>Omit <code>goodsDescription</code> until actual content is available</td>
+</tr>
+<tr>
+<td>Date/time not yet confirmed</td>
+<td>Use a far-future date</td>
+<td>Omit the date property or use a <code>Logistics Event</code> to record the information once confirmed</td>
+</tr>
+<tr>
+<td>Mandatory field in legacy message has no equivalent data</td>
+<td>Populate with dummy</td>
+<td>Do not create a corresponding ONE Record property at all</td>
+</tr>
+</tbody>
+</table>
+<h3 id="handling-mandatory-fields-during-message-conversion">Handling mandatory fields during message conversion<a class="headerlink" href="#handling-mandatory-fields-during-message-conversion" title="Permanent link">&para;</a></h3>
+<p>When converting from a legacy message (FWB, XFWB, etc.) to ONE Record, dummy values present in the source message <strong>should not be carried over</strong> into the ONE Record representation. During the mapping process, implementers should identify known dummy value patterns and treat them as absent data — i.e. simply not populate the corresponding ONE Record property when possible.</p>
+<p>Conversely, when converting from ONE Record to a legacy message format where a field is mandatory, the mapping layer is responsible for generating an appropriate placeholder. This is a concern of the <strong>outbound message generation</strong>, not of the ONE Record data model itself.</p>
+<h3 id="skeletons-and-partial-data">Skeletons and partial data<a class="headerlink" href="#skeletons-and-partial-data" title="Permanent link">&para;</a></h3>
+<p>ONE Record supports the concept of a <strong>skeleton indicator</strong> (<code>skeletonIndicator = true</code>) on Logistics Objects to explicitly signal that an object is incomplete and represents a partial digital twin, pending enrichment by other parties. This is the correct mechanism to use when a Logistics Object needs to be created before all data is available — not the use of dummy values.</p>
+<p>Refer to the <a href="../skeleton/">Skeleton indicator</a> page for further details.</p>
+<h2 id="data-ownership-object-reuse-and-the-authoritative-source-principle">Data ownership, object reuse, and the authoritative source principle<a class="headerlink" href="#data-ownership-object-reuse-and-the-authoritative-source-principle" title="Permanent link">&para;</a></h2>
+<h3 id="reuse-of-logistics-objects">Reuse of Logistics Objects<a class="headerlink" href="#reuse-of-logistics-objects" title="Permanent link">&para;</a></h3>
+<p>ONE Record is a linked data standard. A core consequence of this is that Logistics Objects — such as <code>Location</code>, <code>Organization</code>, <code>RegulatedEntity</code>, or <code>Product</code> — should be <strong>created once and referenced by their URI</strong>, rather than duplicated inline across multiple objects.</p>
+<p>For example, if an airline's Frankfurt hub appears as a departure location on hundreds of shipments, there should be a single <code>Location</code> object for FRA, referenced by all of them — not a new inline location object created for each shipment. The same applies to <code>Organization</code> objects for known parties, <code>Product</code> objects for recurring commodities, and so on.</p>
+<p>Duplicating objects instead of referencing them:
+- Increases storage and processing overhead.
+- Makes it impossible to update a shared attribute (e.g. an organization's address) in a single operation.
+- Breaks the graph structure that enables cross-object queries and data quality checks.</p>
+<h3 id="the-authoritative-source-principle">The authoritative source principle<a class="headerlink" href="#the-authoritative-source-principle" title="Permanent link">&para;</a></h3>
+<p>In ONE Record, each piece of data has an <strong>authoritative source</strong> — the stakeholder who is best positioned to create, own, and maintain it. Implementers should align their data creation responsibilities accordingly:</p>
 <ul>
-<li>At a special point in time, consented by two parties (e.g. “Shipper” and “Carrier”)</li>
+<li><strong>Carriers</strong> own <code>TransportMovement</code> and flight-related data.</li>
+<li><strong>Freight Forwarders</strong> own <code>Shipment</code>, <code>Piece</code>, and <code>Waybill</code> data for the consignments they manage.</li>
+<li><strong>Ground Handlers</strong> own operational event data (acceptance, build-up, etc.) for the facilities they operate.</li>
+<li><strong>Shippers / Known Consignors</strong> own product and commodity data (<code>Product</code>, <code>Item</code>).</li>
 </ul>
-<p>The data of the LO is intentionally shared by the contractual parties at a defined point in time, to freeze that version of the data set as the one used for the contractual purpose. Data might change afterwards, but the changed revisions will not be taken into consideration, unless a new version of the legal entity is generated and consented on.</p>
-<h3 id="master-awb">Master AWB<a class="headerlink" href="#master-awb" title="Permanent link">&para;</a></h3>
-<h4 id="digital-awb-approach">Digital AWB approach<a class="headerlink" href="#digital-awb-approach" title="Permanent link">&para;</a></h4>
-<p>The digital AWB approach follows the four principles of avoiding redundancy, marking outdated data fields as deprecated, removing all data fields without a legal impact and, fourthly, separating all non-legal, physical characteristics in a separate LO (Shipment).</p>
-<p>Firstly: remove redundancies with any other data source and data fields covered by ONE Record mechanisms. Most data classically found in the AWB are essential parts of the Booking Option and Booking Option Request as well as the Piece and Shipment objects. As those LOs are created earlier in the logical chain, the data in the booking process is in the lead and referred to in the AWB. Data like WAYBILL_NUMBER, the total gross weight, the origin and destination, or the number of pieces originate from the Booking, not the AWB. Additionally, some information is not required anymore, especially the total-fields, as the mechanism to be used in ONE Record would be to count the correlated items themselves.</p>
-<p>Secondly: Mark outdated data fields clearly as deprecated. All the data fields found under the WayBill Lane in the cIMP/cXML data catalogue are considered to be outdated, especially the IATA Rates. The whole architecture of these fields, presenting characteristics of groups of pieces, is already not supported by most carriers nowadays. Additionally, the structure of this LO is not compatible with the principles of ONE Record.</p>
-<p>Thirdly: Remove all data fields that have no legal impact on the AWB. A lot of information was traditionally part of the AWB, as the AWB used to be the major – and often exclusive – source of information on the shipment. With ONE Record, any data can shared in correlation with the AWB number or any other unique ID, but then don’t have to be part of the AWB. This mostly effects fields like the accounting information, the airline product names and codes, or the insurance information. Also, parts of the other charges section not be part of the contract between forwarder and carrier, as the add up during the execution of the AWB.</p>
-<p>Fourthly: All physical characteristics of the totality of pieces under one contract can be found in the Shipment LO. This does not include piece-related information, as they are characteristics of pieces themselves, but physical characteristics that are shared by all pieces under that contract.
-The data fields of the AWB LO and owners of each of these fields are better described in the Use Case document for the ONE Record data model (insert reference).</p>
-<h5 id="pieces-ulds-in-awb-wording">Pieces / ULDs in AWB wording<a class="headerlink" href="#pieces-ulds-in-awb-wording" title="Permanent link">&para;</a></h5>
-<p>The legal terminology for BUPs in the AWB is not consistent, as BUPs don´t count as ULDs, but as pieces. To solve this problem, the following solution is suggested: Whenever a BUP is pre-sented by the forwarder, additionally to the ULD LO, a single Piece LO is created with the dimensions and gross weight of the packed ULD.</p>
-<h6 id="42-house-awb">4.2. House AWB<a class="headerlink" href="#42-house-awb" title="Permanent link">&para;</a></h6>
-<p>The House Waybill is made up from data provided by the Customer in the Shippers Letter of Instruction (SLI) which is then enhanced by the forwarder as necessary to include specific data required by the forwarder, carrier and other authorities. This then provides the door to door route map of the pieces linked to the House Waybill for cIQ transportation plan. </p>
+<p>This principle has a direct implication for <strong>object creation</strong>: a party should not create a Logistics Object that falls under another party's ownership unless they are acting on that party's behalf. When a party needs to enrich or correct data owned by another party, the correct mechanism is a <strong>Change Request</strong>, not a silent overwrite of the object.</p>
+<p>Respecting data ownership avoids conflicting data versions and ensures that the authoritative record remains traceable to its source.</p>
+<h2 id="timestamping-events-and-audit-trail">Timestamping, events, and audit trail<a class="headerlink" href="#timestamping-events-and-audit-trail" title="Permanent link">&para;</a></h2>
+<p>ONE Record provides two complementary mechanisms for tracking the state of data over time:</p>
+<ul>
+<li><strong><code>LogisticsEvent</code></strong> objects, which record that something happened at a given point in time (e.g. freight accepted, security status issued, departure recorded).</li>
+<li><strong>Change Requests</strong>, which record that a data property on a Logistics Object was modified, by whom, and when.</li>
+</ul>
+<p>The general principle is that <strong>data should not be silently overwritten</strong>. When a value changes — because a flight was rescheduled, a weight was updated after reweighing, or a security status was revised — the change should be captured through the appropriate mechanism so that a full history is preserved.</p>
+<p>In practice this means:
+- Use <code>LogisticsEvent</code> to record operational milestones and status changes, even when the underlying Logistics Object properties have not changed.
+- Use Change Requests to update Logistics Object properties, so that the audit trail of who changed what and when is maintained by the server.</p>
+<h2 id="handling-of-nulls-empty-strings-and-boolean-defaults">Handling of nulls, empty strings, and boolean defaults<a class="headerlink" href="#handling-of-nulls-empty-strings-and-boolean-defaults" title="Permanent link">&para;</a></h2>
+<h3 id="nulls-and-empty-strings">Nulls and empty strings<a class="headerlink" href="#nulls-and-empty-strings" title="Permanent link">&para;</a></h3>
+<p>In ONE Record JSON-LD payloads, <strong>properties with no value should simply be absent</strong> from the serialisation. Neither <code>null</code> nor empty string (<code>""</code>) values should appear in a valid ONE Record payload:</p>
+<ul>
+<li>A <code>null</code> value has no defined meaning in JSON-LD and will be ignored or may cause parsing errors in some implementations.</li>
+<li>An empty string <code>""</code> is a valid RDF literal with a specific (non-empty) meaning — it asserts that the property exists and its value is an empty string, which is almost never the intended semantics.</li>
+</ul>
+<p>Both patterns are common artefacts of automated serialisation from object models where fields are initialised by default. Implementers should ensure their serialisation layer suppresses null and empty-string properties before publishing a Logistics Object.</p>
+<h3 id="boolean-defaults">Boolean defaults<a class="headerlink" href="#boolean-defaults" title="Permanent link">&para;</a></h3>
+<p>Boolean properties in the ONE Record ontology should only be explicitly set when their value carries meaningful information. In particular:</p>
+<ul>
+<li>A boolean property set to <code>false</code> that is also the implicit default <strong>should be omitted</strong>, as its presence adds no information and increases payload size unnecessarily.</li>
+<li>A boolean property set to <code>true</code> should always be explicitly included, as it signals a deliberate assertion (e.g. <code>skeletonIndicator = true</code> explicitly marks an object as incomplete).</li>
+</ul>
+<p>The most common example is <code>skeletonIndicator</code>: it only needs to be present and set to <code>true</code> when the object is genuinely a skeleton. Omitting it is equivalent to <code>false</code> and is the expected norm for complete objects.</p>
+<p>This is consistent with the broader "omit rather than fabricate" principle described in the dummy values section above.</p>
+<h2 id="the-otheridentifier-object">The <code>OtherIdentifier</code> object<a class="headerlink" href="#the-otheridentifier-object" title="Permanent link">&para;</a></h2>
+<p>In real-world air cargo operations, a single physical or logical entity is often identified by different identifiers depending on the stakeholder or system referring to it. To accommodate this, an <code>OtherIdentifier</code> object has been introduced and is available on a selected set of ONE Record objects.</p>
+<h3 id="scope">Scope<a class="headerlink" href="#scope" title="Permanent link">&para;</a></h3>
+<p><code>OtherIdentifier</code> has been deliberately added to the following categories of objects:</p>
+<ul>
+<li>All <strong><code>PhysicalLogisticsObject</code></strong> subclasses (e.g. <code>Piece</code>, <code>ULD</code>, <code>TransportMeans</code>)</li>
+<li>All <strong><code>LogisticsActivity</code></strong> subclasses (e.g. <code>TransportMovement</code>, <code>Storing</code>)</li>
+<li>All <strong><code>LogisticsAction</code></strong> subclasses (e.g. <code>Loading</code>, <code>Checking</code>)</li>
+<li><strong><code>Waybill</code></strong></li>
+<li>A small number of additional objects that were handpicked based on identified business needs</li>
+</ul>
+<p>It has intentionally <strong>not</strong> been added to all objects in the ontology, in order to avoid leaving free-text placeholders on objects where multiple identifiers have no established business case.</p>
+<h3 id="rationale-and-examples">Rationale and examples<a class="headerlink" href="#rationale-and-examples" title="Permanent link">&para;</a></h3>
+<p><strong>Transport movements — code shares</strong></p>
+<p>A <code>TransportMovement</code> is a prime example of where multiple identifiers are operationally meaningful. In a code share arrangement, a single physical flight is operated by one carrier but marketed under the flight numbers of one or more partner carriers. For instance, a flight operated by Lufthansa (LH) as <strong>LH401</strong> on the Frankfurt–Chicago route may simultaneously be marketed by United Airlines (UA) as <strong>UA9901</strong>. Both identifiers refer to the exact same physical movement. In ONE Record, the <code>TransportMovement</code> object should be created with the operating carrier's flight number as the primary identifier, and the code share partner's flight number(s) captured as <code>OtherIdentifier</code> entries.</p>
+<p><strong>Physical objects — multi-stakeholder identification</strong></p>
+<p>A <code>Piece</code> moving through the supply chain will often carry different identifiers assigned by different stakeholders: the freight forwarder may reference it by their internal handling unit number, the ground handler by a warehouse label, and the carrier by a ULD position reference. Rather than forcing a single canonical identifier, <code>OtherIdentifier</code> allows each of these to be recorded alongside the primary identifier, with a qualifier indicating the issuing party or identifier type.</p>
+<h3 id="structure">Structure<a class="headerlink" href="#structure" title="Permanent link">&para;</a></h3>
+<p>The <code>OtherIdentifier</code> object contains two properties:</p>
+<ul>
+<li><code>otherIdentifierType</code> — a qualifier describing the type or issuing party of the identifier (e.g. <code>"code-share"</code>, <code>"GHA-reference"</code>, <code>"warehouse-label"</code>)</li>
+<li><code>textualValue</code> — the identifier value itself</li>
+</ul>
+<p>This keeps the primary identifier of the parent object clean and semantically unambiguous, while preserving the additional references needed for cross-system traceability.</p>
 
 
 
@@ -3495,7 +4530,7 @@ The data fields of the AWB LO and owners of each of these fields are better desc
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../designprinciples/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Design Principles">
+          <a href="../code-lists/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Code Lists">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3505,20 +4540,20 @@ The data fields of the AWB LO and owners of each of these fields are better desc
                 Previous
               </span>
               <div class="md-ellipsis">
-                Design Principles
+                Code Lists
               </div>
             </div>
           </a>
         
         
           
-          <a href="../governance/" class="md-footer__link md-footer__link--next" aria-label="Next: Governance">
+          <a href="../skeleton/" class="md-footer__link md-footer__link--next" aria-label="Next: Skeleton indicator">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Governance
+                Skeleton indicator
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -3535,7 +4570,7 @@ The data fields of the AWB LO and owners of each of these fields are better desc
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      <img alt="Made with love for Digital Cargo" style="vertical-align: bottom" src=https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20for-Digital%20Cargo-informational" />&nbsp;&nbsp;|&nbsp;&nbsp;Copyright © 2023 IATA
+      <img alt="Made with love for Digital Cargo" style="vertical-align: bottom" src=https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20for-Digital%20Cargo-informational" />&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://iata-cargo.github.io/ONE-Record/development/General/privacy/">Privacy and Cookies</a>&nbsp;&nbsp;|&nbsp;&nbsp;Copyright © 2026 IATA
 
     </div>
   
@@ -3559,10 +4594,11 @@ The data fields of the AWB LO and owners of each of these fields are better desc
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.expand", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": ["stable"], "provider": "mike"}}</script>
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.expand", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": ["stable"], "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../../js/extra.js"></script>
       
