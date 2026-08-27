@@ -136,8 +136,8 @@ Request:
 POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events HTTP/1.1
 Host: 1r.example.com
 
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/LogisticsEvent.json"
 ```
@@ -149,7 +149,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events/afb4b8cf-288a-459c-97fd-ccd538ec527f
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#LogisticsEvent
 ```
 
@@ -162,9 +162,8 @@ Request:
 ```http
 POST /logistics-objects/1a8ded38-1804-467c-c369-81a411416b7c/logistics-events HTTP/1.1
 Host: 1r.example.com
-
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/LogisticsEvent.json"
 ```
@@ -176,12 +175,188 @@ Response:
 ```bash
 HTTP/1.1 404 Not Found
 Content-Language: en-US
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Error_404.json"
 ```
 
 _([Error_404.json](./examples/Error_404.json))_
+
+# Create multiple Logistics Events
+
+In some scenarios, the same Logistics Event must be recorded against multiple Logistics Objects simultaneously (e.g., a departure event that applies to a Shipment and all its Pieces). To reduce the number of HTTP calls required and improve efficiency, a ONE Record server MAY support the creation of a single Logistics Event targeting multiple Logistics Objects by sending an HTTP POST request to the root-level /logistics-events endpoint.
+
+In this case, `cargo:eventFor` MUST be provided as an array of Logistics Object references. Each referenced Logistics Object is evaluated independently: the server MUST apply access control checks per individual Logistics Object and MUST create the event for each Logistics Object for which the client is authorized and that exists.
+
+Partial success is explicitly supported. If one or more target Logistics Objects are invalid (not found or unauthorized), the server MUST still process the remaining valid targets and MUST return a 207 Multi-Status response detailing the outcome for each referenced Logistics Object.
+
+!!! note
+
+    Support for this endpoint is OPTIONAL. ONE Record clients SHOULD fall back to individual `POST /logistics-objects/{{logisticsObjectId}}/logistics-events` calls if the server does not advertise support for the multi-target endpoint.
+
+## Endpoint
+
+```
+POST {{baseURL}}/logistics-events
+```
+
+## Request
+
+The following HTTP header parameters MUST be present in the request:
+
+| Request Header | Description | Examples |
+|--|--|--|
+| Accept | The content type that the ONE Record client wants the HTTP response to be formatted in. | application/ld+json |
+| Content-Type | The content type that is contained with the HTTP body. Valid content types. | application/ld+json |
+
+The HTTP request body MUST contain a valid `LogisticsEvent` in the format specified by the `Content-Type` in the header. The `cargo:eventFor` property MUST be an array containing at least two Logistics Object references. Using a single reference in `cargo:eventFor` is valid but clients SHOULD prefer the existing `POST /logistics-objects/{{logisticsObjectId}}/logistics-events` endpoint in that case.
+
+All other constraints applicable to single-target Logistics Event creation apply equally here: the event MUST have a valid `eventDate`, MUST be immutable after creation, and MUST comply with the ONE Record cargo ontology.
+
+## Response
+
+One of the following HTTP response codes MUST be present in the response:
+
+| Code | Description | Response body |
+|--|--|--|
+| 207 | Multi-Status: the event was processed against each target individually. The response body contains per-target outcome details. | Multi-Status result |
+| 400 | Invalid request body or missing required fields (e.g., missing `eventDate`, empty `cargo:eventFor` array) | Error |
+| 401 | Not authenticated, invalid or expired token | Error |
+| 415 | Unsupported Content Type | Error |
+| 500 | Internal Server Error | Error |
+
+A request to this endpoint MUST return `HTTP/1.1 207 Multi-Status`. Note that `401` and `415` are the only response codes where the entire request fails before per-object evaluation begins. Individual target failures (e.g., `403`, `404`) are reported inside the `207` response body and MUST NOT cause the entire request to fail.
+
+The response body MUST contain a `api:MultiStatusResponse` with one `api:hasCreationResult` entry per referenced Logistics Object. Each entry MUST include:
+
+- `api:hasHTTPStatus` — the HTTP status code for that individual target (`201`, `403`, or `404`)
+- `api:hasLogisticsObject` — the URI of the target Logistics Object
+- `api:hasLogisticsEvent` — the URI of the newly created Logistics Event (only present when `api:hasHTTPStatus` is `201`)
+- `api:hasError` — an `api:Error` object (only present when `api:hasHTTPStatus` is `403` or `404`)
+
+```mermaid
+    classDiagram
+
+    direction LR    
+    
+    class MultiStatusResponse{
+        + hasTotalItems: xsd:nonNegativeInteger  
+        + hasTotalFailed: xsd:nonNegativeInteger 
+        + hasTotalCreated: xsd:nonNegativeInteger 
+        + hasCreationResult: EventCreationResult [1..*]
+    }
+
+    class EventCreationResult{
+        + hasLogisticsObject: LogisticsObject
+        + hasLogisticsEvent: LogisticsEvent 
+        + hasHTTPStatus: xsd:nonNegativeInteger
+        + hasError[]: Error [*]
+    }
+
+    MultiStatusResponse "1" --> "1..*" EventCreationResult
+```
+
+The following HTTP header MUST be present in the response:
+
+| Response Header | Description | Examples |
+|--|--|--|
+| Content-Type | The content type contained in the HTTP body. | application/ld+json; version=2.3.0 |
+
+## Security
+
+To engage with the "Create a Logistics Event for Multiple Logistics Objects" endpoint, a client needs proper authentication. If a request lacks proper authentication, the ONE Record server MUST respond with a `401 "Not Authenticated"` status.
+
+Authorization is evaluated **per Logistics Object**. The `POST_LOGISTICS_EVENT` permission MUST be checked individually for each entry in `cargo:eventFor`. A client that is authorized for some but not all referenced Logistics Objects will receive a `207 Multi-Status` response. Only Logistics Objects for which the client holds the `POST_LOGISTICS_EVENT` permission and which exist on the server MUST result in event creation.
+
+This per-object authorization model ensures that the multi-target endpoint does not bypass the existing access control model defined for individual Logistics Objects.
+
+## Example D1
+
+In the following example, a ONE Record client creates a departure event for a Shipment and two Pieces in a single request. All three targets are found and the client is authorized for all of them.
+
+Request:
+
+```http
+POST /logistics-events HTTP/1.1
+Host: 1r.example.com
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
+
+--8<-- "API-Security/examples/MultipleEvents_example1.json"
+```
+
+_([MultipleEvents.json](./examples/MultipleEvents_example1.json))_
+
+Response:
+
+```bash
+HTTP/1.1 207 Multi-Status
+Content-Type: application/ld+json; version=2.3.0
+
+--8<-- "API-Security/examples/MultipleEventsResponse_example1.json"
+```
+
+_([MultipleEventsResponse.json](./examples/MultipleEventsResponse_example1.json))_
+
+## Example D2
+
+In the following example, a ONE Record client targets three Logistics Objects, but one Piece does not exist (`404`) and the client is not authorized for the other Piece (`403`). The event is successfully created only for the Shipment. The server returns a `207 Multi-Status` reporting the partial outcome.
+
+Request:
+
+```http
+POST /logistics-events HTTP/1.1
+Host: 1r.example.com
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
+
+--8<-- "API-Security/examples/MultipleEvents_example2.json"
+```
+
+_([MultipleEventse_2.json](./examples/MultipleEvents_example2.json))_
+
+Response:
+
+```http
+HTTP/1.1 207 Multi-Status
+Content-Type: application/ld+json; version=2.3.0
+
+--8<-- "API-Security/examples/MultipleEventsResponse_example2.json"
+```
+
+_([MultipleEventsResponse_2.json](./examples/MultipleEventsResponse_example2.json))_
+
+## Example D3
+
+In the following example, a ONE Record client sends a request with a missing `cargo:eventFor` array, which results in a `400 Bad Request`.
+
+Request:
+
+```http
+POST /logistics-events HTTP/1.1
+Host: 1r.example.com
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
+
+--8<-- "API-Security/examples/MultipleEvents_example3.json"
+```
+
+_([MultipleEvents_example3.json](./examples/MultipleEvents_example3.json))_
+
+Response:
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Language: en-US
+Content-Type: application/ld+json; version=2.3.0
+
+
+--8<-- "API-Security/examples/MultipleEventsResponse_example3.json"
+```
+
+_([MultipleEventsResponse_3.json](./examples/MultipleEventsResponse_example3.json))_
+
+
 
 # Get a Logistics Event
 
@@ -201,7 +376,7 @@ The following HTTP header MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -241,7 +416,7 @@ Request:
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events/afb4b8cf-288a-459c-97fd-ccd538ec527f HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
@@ -268,7 +443,7 @@ Request:
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-c369-81a411416b7c/logistics-events/afb4b8cf-288a-459c-97fd-ccd538ec527f HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
@@ -276,7 +451,7 @@ Response:
 ```bash
 HTTP/1.1 404 Not Found
 Content-Language: en-US
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/api#Error
 
 --8<-- "API-Security/examples/Error_404.json"
@@ -308,7 +483,7 @@ The following HTTP query parameters MUST be supported:
 
 | Query parameter               | Description                                                                           | Valid values                       |
 | ----------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------- |
-| **event-code** (optional)     | Optional parameter that can be used to filter the logistics events by event code, the values MUST be comma separated | <ul><li>FOH</li><li>DEP</li></ul>  |
+| **event-code** (optional)     | Optional parameter that can be used to filter the logistics events by event code, the values MUST be comma separated | <ul><li>https://onerecord.iata.org/ns/code-lists/StatusCode#FOH or FOH</li><li>https://onerecord.iata.org/ns/code-lists/StatusCode#DEP or DEP</li></ul>  |
 | **created-after** (optional)  | Filters the logistics events to only include those created after the specified timestamp                              | <ul><li>20190926T075830Z</li></ul> |
 | **created-before** (optional) | Filters the logistics events to only include those created before the specified timestamp                             | <ul><li>20190926T075830Z</li></ul> |
 | **occurred-after** (optional) | Filters the logistics events to only include those that occurred after the specified timestamp                        | <ul><li>20190926T075830Z</li></ul> |
@@ -347,7 +522,7 @@ classDiagram
 The ONE Record API employs the [Collection](https://onerecord.iata.org/ns/api#Collection) class to return an array of objects. This class encompasses two properties:
 
 - [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) returns the array of objects.
-- [api:hasTotalItem](https://onerecord.iata.org/ns/api#hasTotalItem) returns the count of elements within the returned array.
+- [api:hasTotalItems](https://onerecord.iata.org/ns/api#hasTotalItems) returns the count of elements for the defined filter without taking into account pagination (i.e. skip or limit parameter).
 
 In this particular case, @id property in the response body MUST be equal to the Endpoint defined in the [Endpoint section](#endpoint_2) (i.e.: https://1r.example.com/logistics-objects/2a7d1338-9033-13xc-b665-81a411418978/logistics-events). 
 
@@ -356,9 +531,9 @@ In this particular case, @id property in the response body MUST be equal to the 
 
     The ONE Record standard fully adopts the JSON-LD specification, and as a result, the presence of the [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) property of [Collection](https://onerecord.iata.org/ns/api#Collection) is contingent on the number of Logistics Events returned byt the specified query. Specifically:
         
-    - If the specified query returns zero Logistics Events, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) may not appear in the JSON, and [api:hasTotalItem](https://onerecord.iata.org/ns/api#hasTotalItem) must be 0.
-    - When the specified query returns exactly one Logistics Event, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) will directly represent that Logistics Event, and [api:hasTotalItem](https://onerecord.iata.org/ns/api#hasTotalItem) must be 1.
-    - In cases where the specified query returns multiple Logistics Events, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) will be an array containing those Logistics Events, and [api:hasTotalItem](https://onerecord.iata.org/ns/api#hasTotalItem) must be equal to the number of Logistics Events retrieved by the specified query.
+    - If the specified query returns zero Logistics Events, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) may not appear in the JSON, and [api:hasTotalItems](https://onerecord.iata.org/ns/api#hasTotalItems) must be 0.
+    - When the specified query returns exactly one Logistics Event, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) will directly represent that Logistics Event, and [api:hasTotalItems](https://onerecord.iata.org/ns/api#hasTotalItems) must be 1.
+    - In cases where the specified query returns multiple Logistics Events, [api:hasItem](https://onerecord.iata.org/ns/api#hasItem) will be an array containing those Logistics Events, and [api:hasTotalItems](https://onerecord.iata.org/ns/api#hasTotalItems) must be equal to the number of Logistics Events retrieved by the specified query.
 
     During the implementation phase, it is highly recommended to utilize a JSON-LD library for parsing responses.
     To discover JSON-LD libraries for various programming languages, consult the [implementation guidelines](./implementation-guidelines.md#serialization-and-data-formats).
@@ -404,14 +579,14 @@ Request:
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c/logistics-events HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/LogisticsEvents_list.json"
@@ -428,14 +603,14 @@ Request:
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c/logistics-events?event-code=DEP HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/LogisticsEvents_filtered_list.json"
@@ -451,14 +626,14 @@ Request:
 ```http
 GET /logistics-objects/2a7d1338-9033-13xc-b665-81a411418978/logistics-events HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/LogisticsEvents_empty_list.json"
@@ -492,7 +667,7 @@ The following HTTP query parameters MUST be supported:
 
 | Query parameter               | Description                                                                           | Valid values                       |
 | ----------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------- |
-| **event-code** (optional)     | Optional parameter that can be used to filter the logistics events by event code, the values MUST be comma separated | <ul><li>FOH</li><li>DEP</li></ul>  |
+| **event-code** (optional)     | Optional parameter that can be used to filter the logistics events by event code, the values MUST be comma separated | <ul><li>https://onerecord.iata.org/ns/code-lists/StatusCode#FOH or FOH</li><li>https://onerecord.iata.org/ns/code-lists/StatusCode#DEP or DEP</li></ul>  |
 | **created-after** (optional)  | Filters the logistics events to only include those created after the specified timestamp                              | <ul><li>20190926T075830Z</li></ul> |
 | **created-before** (optional) | Filters the logistics events to only include those created before the specified timestamp                             | <ul><li>20190926T075830Z</li></ul> |
 | **occurred-after** (optional) | Filters the logistics events to only include those that occurred after the specified timestamp                        | <ul><li>20190926T075830Z</li></ul> |

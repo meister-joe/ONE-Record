@@ -8,7 +8,7 @@ At creation:
 
 - The `revision` and `latestRevision` properties must be set to 1 by default.
 - The `lastModified` property must be set to the current timestamp at the time of creation.
-- The `type` of the Logistics Object must be assigned according to the `@type` value provided in the payload.
+- The Logistics Object type must be set based on the `@type` value included in the payload. The `type` header should reflect the most specific class derived from the `@type` information provided.
 - The `Content-Type` must be set to the `content-type` provided in the header.
 
 The JSON-LD payload in the `POST` request body must not include the `@graph` property, as its presence can complicate the identification of the root object.
@@ -44,7 +44,7 @@ A successful request MUST return a `HTTP/1.1 201 Created` status code and the fo
 | Header | Description     | Examples          |
 | --------------- |  ------------- |  ----------------------------------- |
 | **Location**    | The URI of the newly created Logistics Object           | https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c |
-| **Type**        | The type of the newly created Logistics Object as a URI | https://onerecord.iata.org/ns/cargo#Piece                    |
+| **Type**        | The most specific type of the newly created Logistics Object as a URI.  | https://onerecord.iata.org/ns/cargo#Piece                    |
 
 The following HTTP status codes MUST be supported:
 
@@ -70,8 +70,8 @@ Request:
 ```http
 POST /logistics-objects HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Piece.json"
 ```
@@ -83,7 +83,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#Piece
 ```
 
@@ -96,8 +96,8 @@ Request:
 ```http
 POST /logistics-objects HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Company.json"
 ```
@@ -109,7 +109,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#Company
 ```
 
@@ -122,8 +122,8 @@ Request:
 ```http
 POST /logistics-objects HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Shipment_with_Piece.json"
 ```
@@ -135,7 +135,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#Shipment
 ```
 
@@ -187,7 +187,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -232,7 +232,7 @@ Request:
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
@@ -365,7 +365,7 @@ Thus, any property in a Logistics Object can be _deleted_, _added_, or _replaced
 - If a [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest) is rejected by the Holder of the Logistics Object, the revision number of the Logistics Object is not incremented but the request is added to the [AuditTrail](https://onerecord.iata.org/ns/api#AuditTrail) of this Logistics Object, marked with the status [REQUEST_REJECTED](https://onerecord.iata.org/ns/api#REQUEST_REJECTED). A rejected [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest) is kept in the [AuditTrail](https://onerecord.iata.org/ns/api#AuditTrail) of the Logistics Object.
 - After a [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest) is accepted, other pending ChangeRequests that affect the same revision MUST be rejected.
 - The PATCH operation MUST NOT be used to create logistics objects; only linking to an existing object is allowed in a [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest). For this reason, the implementor must validate that the subject of each operation is either the target logistics object or an embedded object.
-- The PATCH operation MUST NOT be used to link a [LogisticsEvent](https://onerecord.iata.org/ns/cargo#LogisticsEvent) to a Logistics Object. The ONE Record server MUST reject requested changes that contain operations to the [hasLogisticsEvent](https://onerecord.iata.org/ns/cargo#hasLogisticsEvent) property.
+- The PATCH operation MUST NOT be used to link a [LogisticsEvent](https://onerecord.iata.org/ns/cargo#LogisticsEvent) to a Logistics Object. The ONE Record server MUST reject requested changes that contain operations to the [events](https://onerecord.iata.org/ns/cargo#events) property.
 - The ONE Record server MUST check that the property [hasLogisticsObject](https://onerecord.iata.org/ns/api#hasLogisticsObject) matches the URI/endpoint used for the PATCH request. 
 - If [datatype](https://onerecord.iata.org/ns/api#datatype) in [OperationObject](https://onerecord.iata.org/ns/api#OperationObject) is an IRI of the ONE Record cargo ontology and is not a data class that inherits from LogisticsObject, then the ONE Record Server MUST generate an embeddedObjectId for the object in the `value` property of `OperationObject` (see section about [Blank Nodes and Embedded Objects](./implementation-guidelines.md#serialization-and-data-formats))
 
@@ -437,8 +437,16 @@ classDiagram
     class Error{        
         + hasErrorDetail[]: ErrorDetail [1..*]
         + hasTitle: xsd:string
+        + hasSeverity: Severity[0..1]
     }
+
     Error "1" --> "*" ErrorDetail
+
+    class Severity{
+        <<Enumeration>>
+        WARNING
+        ERROR
+    }
     
     class ErrorDetail{
         + hasCode: xsd:string  [0..1]
@@ -536,7 +544,7 @@ _([Change_example1.json](./examples/Change_example1.json))_
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
+HTTP/1.1 201 Created
 Content-Type: application/ld+json
 Type: https://onerecord.iata.org/ns/api#ChangeRequest
 Location: https://1r.example.com/action-requests/6b948f9b-b812-46ed-be39-4501453da99b
@@ -565,7 +573,7 @@ _([Change_example2.json](./examples/Change_example2.json))_
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
+HTTP/1.1 201 Created
 Content-Type: application/ld+json
 Type: https://onerecord.iata.org/ns/api#ChangeRequest
 Location: https://1r.example.com/action-requests/6b948f9b-b812-46ed-be39-4501453da99c
@@ -598,7 +606,7 @@ _([Change_example3.json](./examples/Change_example3.json))_
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
+HTTP/1.1 201 Created
 Content-Type: application/ld+json
 Type: https://onerecord.iata.org/ns/api#ChangeRequest
 Location: https://1r.example.com/action-requests/6b948f9b-b812-46ed-be39-4501453da99d
@@ -627,7 +635,7 @@ _([Change_example4.json](./examples/Change_example4.json))_
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
+HTTP/1.1 201 Created
 Content-Type: application/ld+json
 Type: https://onerecord.iata.org/ns/api#ChangeRequest
 Location: https://1r.example.com/action-requests/6b948f9b-b812-46ed-be39-4501453da99d
@@ -645,9 +653,8 @@ Request:
 ```http
 POST /logistics-objects HTTP/1.1
 Host: 1r.example.com
-
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/CustomsInformation.json"
 ```
@@ -659,7 +666,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/4d73acf0-3073-4ec9-8aee-b82d64ba3805
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#CustomsInformation
 ```
 
@@ -668,9 +675,8 @@ Request:
 ```http
 POST /logistics-objects HTTP/1.1
 Host: 1r.example.com
-
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/CustomsInformation_2.json"
 ```
@@ -682,7 +688,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/logistics-objects/ba1c2194-2442-400b-b26b-466a01dda8b5
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/cargo#CustomsInformation
 ```
 
@@ -703,7 +709,7 @@ _([Change_example5.json](./examples/Change_example5.json))_
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
+HTTP/1.1 201 Created
 Content-Type: application/ld+json
 Type: https://onerecord.iata.org/ns/api#ChangeRequest
 Location: https://1r.example.com/action-requests/6b948f9b-b812-46ed-be39-4501453da99e
@@ -721,8 +727,8 @@ Request:
 ```http
 PATCH /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Change_example6.json"
 ```
@@ -733,7 +739,7 @@ Response:
 
 ```bash
 HTTP/1.1 400 Bad Request
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Error_400.json"
 ```
@@ -741,7 +747,7 @@ _([Error_400.json](./examples/Error_400.json))_
 
 ## Example C7
 
-In the example below, the Change object contains an illegal operation, i.e. an ADD operation that affects the disallowed property [hasLogisticsEvent](https://onerecord.iata.org/ns/cargo#hasLogisticsEvent).
+In the example below, the Change object contains an illegal operation, i.e. an ADD operation that affects the disallowed property [events](https://onerecord.iata.org/ns/cargo#events).
 The ONE Record server returns a `400 Bad Request`.
 
 Request:
@@ -749,8 +755,8 @@ Request:
 ```http
 PATCH /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Change_example7.json"
 ```
@@ -761,7 +767,7 @@ Response:
 
 ```bash
 HTTP/1.1 400 Bad Request
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Error_400_example2.json"
 ```
@@ -799,7 +805,7 @@ classDiagram
 The AuditTrail of a Logistics Object can be retrieved by performing a GET request to the Logistics Object URI appended by: "/audit-trail", e.g.
 [https://1r.example.com/logistics-objects/11ccfb7c-3643-41db-8098-740fccd97c93/audit-trail](https://1r.example.com/logistics-objects/11ccfb7c-3643-41db-8098-740fccd97c93/audit-trail)
 
-In order to retrieve the history of a Logistics Object between two dates, a query parameter should be added to the request URL as follows: "?updated-from=YYYYMMDDThhmmssZ&updated-to=YYYYMMDDThhmmssZ". The ONE Record client MUST specify this date-time window.
+In order to retrieve the history of a Logistics Object between two dates, a query parameter should be added to the request URL as follows: "?updated-from=YYYYMMDDThhmmssZ&updated-to=YYYYMMDDThhmmssZ". 
 
 ## Endpoint
 ``` 
@@ -812,9 +818,9 @@ The following query parameters MUST be supported:
 
 | Query parameter   | Description | Valid values |
 | ------------------| ----------- | ------------ |
-| **updated-from** (optional) | The start date of the requested audit trail.  If not specificed the acutal time is taken.  | ISO 8601 UTC using format: `YYYYMMDDThhmmssZ`             | 
-| **updated-to** (optional)   | The end date of the requested audit trail. If not specificed the logistics object creation date is taken.  |  ISO 8601 UTC using format: `YYYYMMDDThhmmssZ`            |
-| **status** (optional)       | The type of change requests in the audit trail. If not specified all types are returned.  | <ul><li>PENDING</li><li>ACCEPTED</li><li>REJECTED</li> |
+| **updated-from** (optional) | The start date of the requested audit trail.  If not specificed the logistics object creation date is taken. | ISO 8601 UTC using format: `YYYYMMDDThhmmssZ`             | 
+| **updated-to** (optional)   | The end date of the requested audit trail. If not specificed the acutal time is taken. |  ISO 8601 UTC using format: `YYYYMMDDThhmmssZ`            |
+| **status** (optional)       | The type of change requests in the audit trail. If not specified all types are returned.  | <ul><li>https://onerecord.iata.org/ns/api#REQUEST_PENDING or REQUEST_PENDING</li><li>https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED or REQUEST_ACCEPTED</li><li>https://onerecord.iata.org/ns/api#REQUEST_REJECTED or REQUEST_REJECTED</li> |
 
 
 The following HTTP header parameters MUST be present in the request:
@@ -980,7 +986,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -1025,7 +1031,7 @@ Request:
 ```http
 HEAD /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 Authorization: Bearer <token>
 ```
 
@@ -1050,7 +1056,7 @@ Request:
 ```http
 HEAD /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7d HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 Authorization: Bearer <token>
 ```
 

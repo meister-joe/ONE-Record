@@ -8,7 +8,7 @@ site_url: 'https://iata-cargo.github.io/ONE-Record/'
 
 # Copyright
 copyright: >
-  <img alt="Made with love for Digital Cargo" style="vertical-align: bottom" src=https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20for-Digital%20Cargo-informational" />&nbsp;&nbsp;|&nbsp;&nbsp;Copyright © 2023 IATA
+  <img alt="Made with love for Digital Cargo" style="vertical-align: bottom" src=https://img.shields.io/badge/Made%20with%20%E2%9D%A4%20for-Digital%20Cargo-informational" />&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://iata-cargo.github.io/ONE-Record/development/General/privacy/">Privacy and Cookies</a>&nbsp;&nbsp;|&nbsp;&nbsp;Copyright © 2026 IATA
 
 # Content
 nav:
@@ -19,6 +19,7 @@ nav:
       - Governance: 'General/governance.md'
       - Community: 'General/community.md'
       - License: 'General/license.md'
+      - Privacy and Cookies: 'General/privacy.md'
       - Release:
         - Release note: 'General/release-note.md'
         - Changelog: 'General/changelog.md'
@@ -52,32 +53,48 @@ nav:
       - Introduction: 'Data-Model/index.md'
       - Concepts: 'Data-Model/concepts.md'
       - Design Principles: 'Data-Model/designprinciples.md'
-      - Implementation Guidelines: 'Data-Model/implementation-guidelines.md'
+      - Paper versus ONE Record: 'Data-Model/paperdocs.md'
       - Governance: 'Data-Model/governance.md'
       - Core Resources:
         - Overview: 'Data-Model/features.md'
         - Activity Model: 'Data-Model/activity-model.md'
         - Code Lists: 'Data-Model/code-lists.md'
+        - Implementation Guidelines: 'Data-Model/implementation-guidelines.md'
         - Skeleton indicator: 'Data-Model/skeleton.md'
-      - Business requirements:
-        - Overview: 'Data-Model/businessrequirements.md'
-        - Shipper letter of instriction: 'Data-Model/sli.md'
+#      - Business requirements:
+#        - Overview: 'Data-Model/businessrequirements.md'
+#        - Shipper letter of instriction: 'Data-Model/sli.md'
+#        - ULD Tracking: 'Data-Model/uldtracking.md'
+#        - CO2 Emission: 'Data-Model/co2emissions.md'
+#        - Interactive Cargo: 'Data-Model/ic.md'
+#        - Dangerous Goods: 'Data-Model/dg.md'
+#        - Pharmaceutical Products: 'Data-Model/pharma.md'
+#        - Live Animals: 'Data-Model/la.md'
+#        - Air Waybill: 'Data-Model/waybill.md'
+#        - Distribution: 'Data-Model/distribution.md'
+#        - Consignment Security Declaration: 'Data-Model/csd.md'
+#        - Cargo Receipt: 'Data-Model/cargo-receipt.md'
+    - Data Orchestration:
+      - Introduction: 'Orchestration/index.md'
+      - Cargo-XML Mapping:
+        - Cargo-XML Mapping: 'Orchestration/orchestration-cxml.md'
+        - XFWB Mapping: 'Orchestration/xfwb.md'
+        - XFSU Mapping: 'Orchestration/xfsu.md'
+        - OCI line Mapping: 'Orchestration/orchestration-oci.md'
+#      - PLACI implementation: 'Orchestration/placi.md'
+      - Business requirements and use cases:
+        - Introduction: 'Orchestration/usecase.md'
+        - Air Waybill: 'Data-Model/waybill.md'
+        - Consignment Security Declaration: 'Data-Model/csd.md'
+        - Cargo Receipt: 'Data-Model/cargo-receipt.md'
+        - Shipper letter of instruction: 'Data-Model/sli.md'
+        - Dangerous Goods: 'Data-Model/dg.md'
+        - Distribution: 'Data-Model/distribution.md'
+        - Live Animals: 'Data-Model/la.md'
+        - Pharmaceutical Products: 'Data-Model/pharma.md'
         - ULD Tracking: 'Data-Model/uldtracking.md'
         - CO2 Emission: 'Data-Model/co2emissions.md'
         - Interactive Cargo: 'Data-Model/ic.md'
-        - Dangerous Goods: 'Data-Model/dg.md'
-        - Pharmaceutical Products: 'Data-Model/pharma.md'
-        - Live Animals: 'Data-Model/la.md'
-        - Air Waybill: 'Data-Model/waybill.md'
-        - Distribution: 'Data-Model/distribution.md'
-        - Consignment Security Declaration: 'Data-Model/csd.md'
-        - Cargo Receipt: 'Data-Model/cargo-receipt.md'
-    - Data Orchestration:
-      - Introduction: 'Orchestration/index.md'
-      - CargoXML Mapping: 'Orchestration/orchestration-cxml.md'
-      - XFWB Mapping: 'Orchestration/xfwb.md'
-      - OCI line Mapping: 'Orchestration/orchestration-oci.md'
-#      - PLACI implementation: 'Orchestration/placi.md'
       - MOP mapping:
         - Introduction: 'Orchestration/orchestration-mop.md'
         - P01 - Book Shipment: 'Orchestration/orchestration-01.md'

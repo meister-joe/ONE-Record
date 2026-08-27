@@ -1,23 +1,63 @@
-ONE Record uses a generic action request pattern to support the process of one organization requesting an action that must be approved by another organization. 
-Examples include [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest), where the subscriber asks the publisher to subscribe him/her on a LogisticsObject; or the [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest), 
-where a `User of a LogisticsObject` submits a [Change](https://onerecord.iata.org/ns/api#Change) of a LogisticsObject that must be approved and applied by the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object).
+ONE Record uses a generic Action Request pattern to support the process where one Organization requests an action that must be reviewed by another Organization.
 
-While the creation of Action Requests by submitting Change, Subscription or Access Delegation objects is described in the previous sections, this section describes the managing of Action Requests.
-This enables users and holders to view and revoke action requests, and enables holders to change the status of an ActionRequest, i.e. to accept or reject.
+In the context of Action Requests, the following generic roles are used:
 
+- **Requestor**: the Organization that creates the ActionRequest. This is the Organization referenced by `isRequestedBy`.
+- **Holder**: the Organization that holds or publishes the Logistics Object concerned by the ActionRequest.
+- **Requestee**: the Organization that receives the ActionRequest and is expected to process it. In most cases, this is the Data Holder.
+
+Examples include:
+
+- A [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest), where the Requestor asks to subscribe to updates on a Logistics Object held or published by the Holder.
+- A [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest), where the Requestor submits a change to a Logistics Object that must be reviewed and applied by the Holder.
+- An `AccessDelegationRequest`, where the Requestor asks the Holder to grant or change access rights for a Logistics Object.
+- A `VerificationRequest`, where the Requestor asks the Holder to acknowledge or verify information related to a Logistics Object.
+
+While the creation of Action Requests by submitting Change, Subscription, Verification, or Access Delegation objects is described in the previous sections, this section describes how Action Requests are managed.
+
+This includes the ability for authorized parties to view and revoke Action Requests, and the ability for the Holder to update the status of an ActionRequest, for example by accepting, rejecting, acknowledging, or marking it as failed.
+
+
+
+
+- An `ActionRequest` MUST only be revoked by the original Requestor or by the Data Holder of the concerned Logistics Object.
+- The `hasRequestStatus` property MUST represent the current status of the `ActionRequest`.
+- The `hasRequestStatusSince` property MUST indicate the date and time from which the current `hasRequestStatus` applies.
+- The `hasRequestStatusHistory` property MAY be used to expose previous request statuses. It MUST NOT contain the current status of the `ActionRequest`.
+- Whenever `hasRequestStatus` changes, the previous value of `hasRequestStatus` and its corresponding `hasRequestStatusSince` value SHOULD be appended as a `RequestStatusEntry` to `hasRequestStatusHistory`.
+- In a `RequestStatusEntry`, the `isChangedBy` property records the Organization that approved or performed the transition from the status represented by that entry to the next request status.
+- `RequestStatusEntry` records SHOULD be treated as immutable, except for correction of invalid data.
+- If errors occur while processing an accepted `ActionRequest`, the `hasRequestStatus` of this `ActionRequest` MUST be changed to `REQUEST_FAILED`, and `hasRequestStatusSince` MUST be set to the date and time from which the failed status applies.
+``
 **Guidelines for Action Requests in ONE Record:**
 
-- An [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST be accessible via the URI of the [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) (requires sufficient permissions)
+- An [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST be accessible via the URI of the [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest), provided that the requesting party has sufficient permissions.
+
 - An [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST only be accepted or reject by the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object)
+
 - A [VerificationRequest](https://onerecord.iata.org/ns/api#VerificationRequest) MUST only be acknowledged by the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object)
+
 - An [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) where [isRequestedBy](https://onerecord.iata.org/ns/api#requestedBy) is the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object) SHOULD be accepted and processed directly.
 
 - [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest) and [VerificationRequest](https://onerecord.iata.org/ns/api#VerificationRequest) MUST only be revoked as long as it is in `REQUEST_PENDING` status.
-- [AccessDelegationRequest](https://onerecord.iata.org/ns/api#AccessDelegationRequest) and [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) can be revoked as long as they are in `REQUEST_PENDING` or `REQUEST_ACCEPTED` status.
-- An [AccessDelegationRequest](https://onerecord.iata.org/ns/api#AccessDelegationRequest) MUST only be revoked by the `Delegator` or the `Delegate`
-- A [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) MUST only be revoked by the `Requestor`/`Subscriber` or the `Publisher`
-- A [VerificationRequest](https://onerecord.iata.org/ns/api#VerificationRequest) or a [ChangeRequest](https://onerecord.iata.org/ns/api#ChangeRequest) MUST only be revoked by the `Requestor` or the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object)
-- If errors occur while processing an accepted [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest), the [hasRequestStatus](https://onerecord.iata.org/ns/api#hasRequestStatus) of this [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST be changed to [REQUEST_FAILED](https://onerecord.iata.org/ns/api#REQUEST_FAILED)
+
+- [AccessDelegationRequest](https://onerecord.iata.org/ns/api#AccessDelegationRequest) and [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) MAY be revoked as long as they are in `REQUEST_PENDING` or `REQUEST_ACCEPTED` status.
+
+- An [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST only be revoked by the original Requestor or by the [`Holder of the LogisticsObject`](./concepts.md#holder-of-a-logistics-object)
+
+- The `hasRequestStatus` property MUST represent the current status of the [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest).
+
+- The `hasRequestStatusSince` property MUST indicate the date and time from which the current `hasRequestStatus` applies.
+
+- The `hasRequestStatusHistory` property MAY be used to expose previous request statuses. It MUST NOT contain the current status of the ActionRequest.
+
+- Whenever `hasRequestStatus` changes, the previous value of `hasRequestStatus` and its corresponding `hasRequestStatusSince` value SHOULD be appended as a `RequestStatusEntry` to `hasRequestStatusHistory`. 
+
+- In a `RequestStatusEntry`, the property `isChangedBy` records the Organization that approved or performed the transition from the status represented by that entry to the next request status.
+
+- `RequestStatusEntry` records SHOULD be treated as immutable, except for correction of invalid data.
+
+- If errors occur while processing an accepted [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest), the [hasRequestStatus](https://onerecord.iata.org/ns/api#hasRequestStatus) of this [ActionRequest](https://onerecord.iata.org/ns/api#ActionRequest) MUST be changed to [REQUEST_FAILED](https://onerecord.iata.org/ns/api#REQUEST_FAILED), and `hasRequestStatusSince` MUST be set to the date and time from which the failed status applies.
 
 
 **ActionRequest state diagram for AccessDelegationRequest, ChangeRequest, and SubscriptionRequest**
@@ -91,7 +131,8 @@ The properties and relationships to other data classes are visualized in the fol
     class AccessDelegation{
         + hasDescription: xsd:string [0..1]
         + hasPermission[]: Permission [1..*]                
-        + isRequestedFor[]: Organization [1..*]
+        + isRequestedFor[]: Organization
+        + expiresAt: xsd:dateTime [0..1]    
         + notifyRequestStatusChange: xsd:boolean = FALSE
         + hasLogisticsObject[]: LogisticsObject [1..*]        
     }
@@ -106,8 +147,10 @@ The properties and relationships to other data classes are visualized in the fol
         + isRequestedAt: xsd:dateTime         
         + isRequestedBy: Organization            
         + isRevokedBy: Organization [0..1]
+        + isRevokedAt: xsd:dateTime [0..1] 
         + hasRequestStatus: RequestStatus = REQUEST_PENDING
-        + isRevokedAt: xsd:dateTime [0..1]                 
+        + hasRequestStatusSince: xsd:dateTime
+        + hasRequestStatusHistory []: RequestStatusEntry [0..*]                  
     }
     ActionRequest <|-- AccessDelegationRequest
     ActionRequest <|-- ChangeRequest
@@ -115,9 +158,19 @@ The properties and relationships to other data classes are visualized in the fol
     ActionRequest <|-- VerificationRequest
 
     ActionRequest "1" --> "0..*" Error     
-    ActionRequest "1" --> "1..*" Organization : requestedBy    
+    ActionRequest "1" --> "1" Organization : requestedBy    
     ActionRequest --> RequestStatus                
-    ActionRequest "1" --> "1..*" Organization : revokedBy
+    ActionRequest "1" --> "0..1" Organization : revokedBy
+    ActionRequest "1" --> "0..*" RequestStatusEntry : hasRequestStatusHistory
+
+    class RequestStatusEntry{
+        + hasRequestStatus: RequestStatus
+        + hasRequestStatusSince: xsd:dateTime
+        + isChangedBy: Organization [0..1]
+    }
+
+    RequestStatusEntry "1" --> "0..1" Organization : isChangedBy
+    RequestStatusEntry --> RequestStatus 
 
     class AccessDelegationRequest{
         + hasAccessDelegation: AccessDelegation        
@@ -192,6 +245,17 @@ The properties and relationships to other data classes are visualized in the fol
     }
 ```
 
+## Using Action Requests 
+
+An `ActionRequest` is the mechanism used in ONE Record to allow a third-party Organization to request an action on a specific Logistics Object. Action Requests are used as a generic pattern for several processes, including `ChangeRequest`, `SubscriptionRequest`, `AccessDelegationRequest`, and `VerificationRequest`. For example, a `ChangeRequest` is used when a party proposes a change to a Logistics Object that must be approved and applied by the Holder, while a `SubscriptionRequest` is used when a party requests to subscribe to updates for a Logistics Object. The `ActionRequest` object allows both the requestor and the holder to track the lifecycle of the request through its current status, its timestamps, and any errors that occurred during processing.
+
+The `isRequestedAt` property records the date and time at which the ActionRequest was created. The `isRequestedBy` property identifies the Organization that submitted the request. The `hasRequestStatus` property represents the current status of the ActionRequest, for example `REQUEST_PENDING`, `REQUEST_ACCEPTED`, `REQUEST_REJECTED`, `REQUEST_FAILED`, `REQUEST_REVOKED`, or `REQUEST_ACKNOWLEDGED`. When the current status changes, the `hasRequestStatusSince` property MUST be updated to indicate the date and time from which the current `hasRequestStatus` applies. This allows clients to determine not only the current status of the request, but also when that status became valid. For example, if a `ChangeRequest` has `hasRequestStatus` set to `REQUEST_ACCEPTED`, then `hasRequestStatusSince` indicates when the request was accepted.
+
+The optional `hasRequestStatusHistory` property contains previous status values of the ActionRequest. It is used to preserve the historical lifecycle of the request without duplicating the current status, which is already represented directly by `hasRequestStatus` and `hasRequestStatusSince` on the ActionRequest itself. Each item in `hasRequestStatusHistory` is a `RequestStatusEntry`. A `RequestStatusEntry` records a previous `hasRequestStatus`, the `hasRequestStatusSince` timestamp from which that previous status applied, and optionally the `isChangedBy` Organization that approved or performed the transition from that historical status to the next request status. Whenever the status of an ActionRequest changes, the previous value of `hasRequestStatus` and its corresponding `hasRequestStatusSince` SHOULD be appended to `hasRequestStatusHistory` as a `RequestStatusEntry`, before the ActionRequest is updated with the new current status.
+
+If the ActionRequest is revoked, the `hasRequestStatus` property MUST be set to `REQUEST_REVOKED`, and `isRevokedAt` records the date and time at which the revocation occurred. The `isRevokedBy` property identifies the Organization that revoked the request. Revocation rules depend on the concrete type of ActionRequest. For example, `ChangeRequest` and `VerificationRequest` can only be revoked while they are in `REQUEST_PENDING` status, while `AccessDelegationRequest` and `SubscriptionRequest` can be revoked while they are in either `REQUEST_PENDING` or `REQUEST_ACCEPTED` status. If an error occurs while processing an accepted ActionRequest, the `hasRequestStatus` MUST be changed to `REQUEST_FAILED`, `hasRequestStatusSince` MUST be updated accordingly, and one or more `Error` objects MAY be provided through `hasError` to describe the failure.
+
+Concrete subclasses of `ActionRequest` carry the business object that is being requested. An `AccessDelegationRequest` contains an `AccessDelegation` through `hasAccessDelegation`; a `ChangeRequest` contains a `Change` through `hasChange`; a `SubscriptionRequest` contains a `Subscription` through `hasSubscription`; and a `VerificationRequest` contains a `Verification` through `hasVerification`. Clients SHOULD use the generic ActionRequest properties to understand and monitor the lifecycle of the request, and the subclass-specific property to understand the requested business action.
 
 # Get Action Request Details
 
@@ -207,7 +271,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -251,14 +315,14 @@ Request:
 ```http
 GET /action-requests/599fea49-7287-42af-b441-1fa618d2aaed HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 Location: https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed
 Type: https://onerecord.iata.org/ns/api#SubscriptionRequest
@@ -276,14 +340,14 @@ Request:
 ```http
 GET /action-requests/e4cf1ea5-96fc-4025-be21-159b779e3200 HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 Location: https://1r.example.com/action-requests/e4cf1ea5-96fc-4025-be21-159b779e3200
 Type: https://onerecord.iata.org/ns/api#VerificationRequest
@@ -324,8 +388,8 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
-| **Content-Type** | The content type that is contained with the HTTP body.               | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Content-Type** | The content type that is contained with the HTTP body.               | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -369,8 +433,8 @@ Request:
 ```http
 PATCH /action-requests/733ed391-ad11-4c02-a2bf-c77ee7997c28?status=https://onerecord.iata.org/ns/api#REQUEST_ACCEPTED HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 ```
 
@@ -379,7 +443,7 @@ Response:
 
 ```bash
 HTTP/1.1 204 No Content
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/api#SubscriptionRequest
 Location: https://1r.example.com/action-requests/733ed391-ad11-4c02-a2bf-c77ee7997c28
 ```
@@ -396,7 +460,7 @@ This API action must be used to revoke an Action Request, which can only be done
 ```
 ## Request
 
-Revoking an Action Rquest does not require any mandatory HTTP headers.
+Revoking an Action Request does not require any mandatory HTTP headers.
 
 ## Response
 
@@ -410,6 +474,7 @@ The following HTTP status codes MUST be supported:
 | **401** | Not authenticated                                           | Error            |
 | **403** | Not authorized to update the Action Request                 | Error            |
 | **404** | Action Request not found                                    | Error            |
+| **422** | Unprocessable request, when the server understands the revoke request but cannot process it because the action request is not in a revocable state. | Error            |
 | **500** | Internal Server Error                                       | Error            |
 
 
@@ -459,7 +524,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -499,14 +564,14 @@ Request:
 ```http
 HEAD /action-requests/599fea49-7287-42af-b441-1fa618d2aaed HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 Location: https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed
 Type: https://onerecord.iata.org/ns/api#SubscriptionRequest

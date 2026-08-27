@@ -175,12 +175,12 @@ More precisely, the `Accept` HTTP request header SHOULD be used by a ONE Record 
 so that a ONE Record server can select one of the proposals:
 
 ```http
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 The ONE Record server MUST inform the ONE Record client about the selected version using the `Content-Type` response header:
 ```http
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 ```
 
 If no version is specified in the `Accept` request header by the ONE Record client, the ONE Record server SHOULD use the highest supported API version (see [supportedApiVersion](https://onerecord.iata.org/ns/api#supportedApiVersion) in [ServerInformation](https://onerecord.iata.org/ns/api#ServerInformation)).
@@ -250,6 +250,7 @@ classDiagram
    class Error{        
         + hasErrorDetail[]: ErrorDetail [1..*]
         + hasTitle: xsd:string
+        + hasSeverity: Severity[0..1]
     }
     Error "1" --> "*" ErrorDetail
     
@@ -259,21 +260,31 @@ classDiagram
         + hasProperty: xsd:anyURI [0..1]
         + hasResource: xsd:anyURI [0..1]
     }
+
+    class Severity{
+        <<Enumeration>>
+        WARNING
+        ERROR
+    }
 ```
 
 The Error object has the following properties:
 
 | Property       | Description                      | Required     | Class       |
 | ----------- |  ------------------------------- | ------------ | ----------- |
-| **hasTitle**            | a short summary of the problem. A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization.    | yes           | w3c:String  |
+| **hasTitle**            | a short summary of the problem. A short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization.    | yes           | xsd:string  |
+| **hasSeverity**          | Severity of the error              | no            | api:Severity |
 | **hasErrorDetail**          | details of the error              | no            | api:ErrorDetail |
-| - hasCode               | a ONE Record application-specific error code expressed as a string value. | no            | w3c:String  |
-| - hasMessage            | Explanation specific to this problem                  | no            | w3c:String  |
-| - hasProperty          | data element to which the error applies               | no            | w3c:String  |
-| - hasResource           | URI of the object concerned       | no            | w3c:String   |
+| - hasCode               | a ONE Record application-specific error code expressed as a string value. | no            | xsd:string  |
+| - hasMessage            | Explanation specific to this problem                  | no            | xsd:string  |
+| - hasProperty          | data element to which the error applies               | no            | xsd:string  |
+| - hasResource           | URI of the object concerned       | no            | xsd:string   |
 
 [ErrorDetail](https://onerecord.iata.org/ns/api#ErrorDetail) SHOULD contain a human-readable error message that is expected to be read and understood by users. (see below examples)
 For example, set the property [hasMessage](https://onerecord.iata.org/ns/api#hasMessage) to `"Authenticated client could not be found in ACL for the Logistics Object"` instead of just `"Error"`.
+
+The [hasSeverity](https://onerecord.iata.org/ns/api#hasMessage) property is optional. However, if it is not provided, it must be assumed to have a default value of [ERROR](https://onerecord.iata.org/ns/api#ERROR).
+
 
 ## Synchronous Error Handling
 
@@ -284,18 +295,36 @@ In this scenario, the property [hasCode](https://onerecord.iata.org/ns/api#hasCo
 
 The following table contains a non-exhaustive list of HTTP error statuses that require an Error response:
 
-| Code  | Description                | Response body |
-| --- | -----                        | --- |
+| Code | Description | Response body |
+| --- | --- | --- |
 | 400 | Bad request | Error       |
 | 401 | Not authenticated or expired token | Error       |
 | 403 | Not authorized to perform action | Error       |
 | 404 | Not Found | Error       |
 | 405 | Method not allowed | Error       |
 | 415 | Unsupported content type | Error       |
+| 422 | Unprocessable content | Error |
 | 500 | Internal Server Error | Error       |
+
+To harmonize error responses, this section defines a common error response structure.
+
+| HTTP status code | Title | Message in ErrorDetails |
+| --- | --- | --- |
+| `400` | `Invalid body request` | The request body is missing, malformed, or cannot be parsed. |
+| `400` | `Invalid query parameter request` | The query parameter is missing, malformed, or cannot be parsed. |
+| `400` | `Invalid resource` | The request body does not conform to the expected ONE Record resource structure. |
+| `401` | `Not authenticated or expired token` | The request does not contain valid authentication credentials, or the provided token is expired. |
+| `403` | `Not authorized to perform action` | The authenticated party is not authorized to perform the requested action. |
+| `404` | `Resource not found` | The requested resource cannot be found. |
+| `405` | `Method not allowed` | The HTTP method is not supported for the requested resource. |
+| `409` | `Identifier conflict` | A resource with the specified identifier already exists, or the request conflicts with the current state of the resource. |
+| `415` | `Unsupported content type` | The request content type is not supported by the endpoint. |
+| `422` | `Unprocessable content` | The request body is syntactically valid, but it cannot be processed because it does not satisfy semantic, validation, or business rules. |
+| `500` | `Internal server error` | The server encountered an unexpected condition that prevented it from fulfilling the request. |
 
 There is a list of non-exhaustive JSON-LD syntax error types (relative to 400 Bad Request error family) on the official [JSON-LD API specifications website](https://www.w3.org/TR/json-ld-api/#error-handling).
 
+If an error is associated with a specific property or resource, the `hasProperty` and `hasResource` properties SHOULD be used in the error details to identify the affected element.
 
 **Example**
 

@@ -1,6 +1,6 @@
 # ONE Record API Class Diagram
 
-**Version:** 2.2.0 **Status:** Endorsed by COTB on July 28th, 2025.
+**Version:** 2.4.0 **Status:** Draft
 
 ```mermaid
 classDiagram   
@@ -18,7 +18,8 @@ classDiagram
     class AccessDelegation{
         + hasDescription: xsd:string [0..1]
         + hasPermission[]: Permission [1..*]                
-        + isRequestedFor[]: Organization [1..*]
+        + isRequestedFor[]: Organization 
+        + expiresAt: xsd:dateTime [0..1]    
         + notifyRequestStatusChange: xsd:boolean = FALSE
         + hasLogisticsObject[]: LogisticsObject [1..*]        
     }
@@ -27,14 +28,17 @@ classDiagram
     AccessDelegation "1" --> "1..*" Organization: requestedFor
     AccessDelegation "1" --> "1..*" LogisticsObject
 
+
     class ActionRequest {
         <<Abstract>>         
         + hasError[]: Error [*]
         + isRequestedAt: xsd:dateTime         
         + isRequestedBy: Organization            
         + isRevokedBy: Organization [0..1]
+        + isRevokedAt: xsd:dateTime [0..1] 
         + hasRequestStatus: RequestStatus = REQUEST_PENDING
-        + isRevokedAt: xsd:dateTime [0..1]                 
+        + hasRequestStatusSince: xsd:dateTime
+        + hasRequestStatusHistory []: RequestStatusEntry [0..*]               
     }
     ActionRequest <|-- AccessDelegationRequest
     ActionRequest <|-- ChangeRequest
@@ -43,9 +47,20 @@ classDiagram
 
 
     ActionRequest "1" --> "0..*" Error     
-    ActionRequest "1" --> "1..*" Organization : requestedBy    
+    ActionRequest "1" --> "1" Organization : requestedBy    
     ActionRequest --> RequestStatus                
-    ActionRequest "1" --> "1..*" Organization : revokedBy
+    ActionRequest "1" --> "0..1" Organization : revokedBy
+    ActionRequest "1" --> "0..*" RequestStatusEntry : hasRequestStatusHistory
+
+
+    class RequestStatusEntry{
+        + hasRequestStatus: RequestStatus
+        + hasRequestStatusSince: xsd:dateTime
+        + isChangedBy: Organization [0..1]
+    }
+
+    RequestStatusEntry "1" --> "0..1" Organization : isChangedBy
+    RequestStatusEntry --> RequestStatus     
 
     class AccessDelegationRequest{
         + hasAccessDelegation: AccessDelegation        
@@ -88,9 +103,17 @@ classDiagram
     class Error{        
         + hasErrorDetail[]: ErrorDetail [1..*]
         + hasTitle: xsd:string
+        + hasSeverity: Severity[0..1]
     }
+
     Error "1" --> "*" ErrorDetail
+    Error "1" --> "0..1" Severity
     
+    class Severity{
+        <<Enumeration>>
+        WARNING
+        ERROR
+    }
     class ErrorDetail{
         + hasCode: xsd:string  [0..1]
         + hasMessage: xsd:string [0..1]
@@ -233,4 +256,21 @@ classDiagram
     }
     Verification "1" --> "1" LogisticsObject
     Verification "1" --> "1..*" Error
+
+    class MultiStatusResponse{
+        + hasTotalItems: xsd:nonNegativeInteger  
+        + hasTotalFailed: xsd:nonNegativeInteger 
+        + hasTotalCreated: xsd:nonNegativeInteger 
+        + hasCreationResult: EventCreationResult [1..*]
+    }
+
+    class EventCreationResult{
+        + hasLogisticsObject: LogisticsObject
+        + hasLogisticsEvent: LogisticsEvent 
+        + hasHTTPStatus: xsd:nonNegativeInteger
+        + hasError[]: Error [*]
+    }
+
+    MultiStatusResponse "1" --> "1..*" EventCreationResult
+    EventCreationResult "1" --> "0..*" Error
 ```

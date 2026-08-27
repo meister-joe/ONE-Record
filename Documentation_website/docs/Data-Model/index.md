@@ -13,17 +13,15 @@ It is assumed that the reader is familiar with air cargo vocabulary and the conc
 
 # Supporting Documents
 
-N/A
-
-# Document Version
-
-**Version:** 1.0.0
+- [Changelog](./General/changelog.md) contains a list of all notable changes for this version.
+- [ONE Record Data Model Ontology](https://github.com/IATA-Cargo/ONE-Record/blob/master/2026-07-standard/Data-Model/IATA-1R-DM-Ontology.ttl)
+- [ONE Record Code List Ontology](https://github.com/IATA-Cargo/ONE-Record/blob/master/2026-07-standard/Data-Model/IATA-1R-CL-Ontology.ttl)
 
 # ONE Record Data Model version:
 
-**Version:** 3.2.0
+**Version:** 3.3.0
 
-**Status:** Endorsed by COTB on July 28th, 2025.
+**Status:** Endorsed by COTB on 25th July 2026.
 
 !!! note
     Discussion on the data model is highly encouraged and please contact [onerecord@iata.org](mailto:onerecord@iata.org) with any comments or suggested improvements.<br/>

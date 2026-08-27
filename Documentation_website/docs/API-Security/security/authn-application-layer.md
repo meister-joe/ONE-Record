@@ -176,7 +176,7 @@ Example: https://auth.example.com/token
 
 | Request Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Authorization** | Provides credentials that authenticates a ONE Record client with an IfP. This header must be set to Basic <base64 encoded "clientId:clientSecret"> if the IdP authentication method is set to Basic. The client_id and client_secret are provided when a client subscribes to an IdP.  | Basic b25lOnJlY29yZA==     
+| **Authorization** | Provides credentials that authenticates a ONE Record client with an IdP. This header must be set to Basic <base64 encoded "clientId:clientSecret"> if the IdP authentication method is set to Basic. The client_id and client_secret are provided when a client subscribes to an IdP.  | Basic b25lOnJlY29yZA==     
 | **Content-Type** | Define the content type of the request | application/x-www-form-urlencoded
 
 ### Request Body Parameter
@@ -348,7 +348,7 @@ Having received an ID token, the ONE Record client can then send a request to a 
 ```http
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJodHRwczovLzFyLmV4YW1wbGUuY29tL2xvZ2lzdGljcy1vYmplY3RzLzk1N2UyNjIyLTlkMzEtNDkzYi04YjhmLTNjODA1MDY0ZGJkYSIsImlzcyI6Imh0dHBzOi8vYXV0aC5leGFtcGxlLmNvbSIsImV4cCI6Ijg2NDAwIn0.IDnawFcz7mfHDMasHLNN7NsnFFZIxp9mVPEF9eyQou0
 ```
 

@@ -67,8 +67,16 @@ The properties and relationships to other data classes are visualized in the fol
     class Error{        
         + hasErrorDetail[]: ErrorDetail [1..*]
         + hasTitle: xsd:string
+        + hasSeverity: Severity[0..1]
+
     }
     Error "1" --> "*" ErrorDetail
+
+    class Severity{
+        <<Enumeration>>
+        WARNING
+        ERROR
+    }
     
     class ErrorDetail{
         + hasCode: xsd:string  [0..1] [0..1]
@@ -86,6 +94,8 @@ The properties and relationships to other data classes are visualized in the fol
     }
     Verification "1" --> "1" LogisticsObject
     Verification "1" --> "1..*" Error
+
+    Error "1" --> "0..1" Severity
 ```
 
 ## Response
@@ -131,8 +141,8 @@ Request:
 ```http
 POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Verification.json"
 ```
@@ -142,7 +152,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/action-requests/e4cf1ea5-96fc-4025-be21-159b779e3200
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/api#VerificationRequest
 ```
 

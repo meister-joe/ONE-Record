@@ -114,14 +114,14 @@ The publisher sends a GET request to the subscriptions endpoint of a Subscriber 
 ```http
 GET /subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER&topic=https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 **Step 2 - Acknowledge Subscription request**
 In order to acknowledge a proposal the subscriber response to the request with the Subscription information. Example:
 ```bash
 HTTP/1.1 200 OK 
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/Subscriptions_example1.json"
@@ -134,7 +134,7 @@ It is the responsibility of the publisher to check the response, i.e. to compare
 The publisher uses the response to store it in a [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest), which can later be referenced in Notifications (cf. [isTriggeredBy](https://onerecord.iata.org/ns/api#isTriggeredBy) property in [Notification](https://onerecord.iata.org/ns/api#Notification)) and used to revoke the subscription.
 For example, the URI of the newly created SubscriptionRequest could be [https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaee](https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaee)
 
-The publisher MUST ensure that the subscriber gets sufficient access to the resulted [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) to request the status of the [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) and can revoke [AccessDelegationRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) (see also section about [revoking Action Requests](./action-requests.md#revoke-action-request)
+The publisher MUST ensure that the subscriber gets sufficient access to the resulted [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest) to retrieve its status and revoke it if needed. For more information, see [revoking Action Requests](./action-requests.md#revoke-action-request)
 
 Here an example of a [SubscriptionRequest](https://onerecord.iata.org/ns/api#SubscriptionRequest):
 
@@ -156,8 +156,8 @@ Example:
 ```http
 POST /notifications HTTP/1.1
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example1.json"
 ```
@@ -186,7 +186,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header    | Description                                  | Examples                |
 | ----------------- |    -------------------------------- |   ------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 
 ## Response
 
@@ -210,6 +210,7 @@ The following HTTP status codes MUST be supported:
 | **400**  | The request is invalid	                                                  | Error |
 | **401**  | Not authenticated                                                        | Error |
 | **403**  | Not authorized to retrieve the Subscription Information                  | Error |
+| **422**  | Unprocessable content. The request is syntactically valid, but the server cannot process it because one or more business rules or validation constraints were not satisfied.                  | Error |
 | **500**  | Internal Server Error                                                    | Error |
 
 
@@ -227,14 +228,14 @@ Request:
 ```http
 GET /subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER&topic=https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK 
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/Subscriptions_example1.json"
@@ -251,14 +252,14 @@ Request:
 ```http
 GET /subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_TYPE&topic=https://onerecord.iata.org/ns/cargo#Shipment
 Host: 1r.example.com
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK 
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/Subscriptions_example2.json"
@@ -282,7 +283,7 @@ Response:
 
 ```bash
 HTTP/1.1 400 Bad Request 
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/Subscriptions_example3_Error_400.json"
@@ -305,7 +306,7 @@ Response:
 
 ```bash
 HTTP/1.1 400 Bad Request 
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Content-Language: en-US
 
 --8<-- "API-Security/examples/Subscriptions_example3_Error_400_example2.json"
@@ -355,7 +356,7 @@ The following HTTP header parameters MUST be present in the request:
 
 | Header   | Description                         | Examples            |
 | ---------------- |  --------------------------------- | ------------------- |
-| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.2.0</li><li>application/ld+json; version=1.2</li></ul> |
+| **Accept**        | The content type that a ONE Record client wants the HTTP response to be formatted in. This SHOULD include the version of the ONE Record API, otherwise the latest supported ONE Record API MAY be applied. | <ul><li>application/ld+json</li><li>application/ld+json; version=2.3.0</li><li>application/ld+json; version=1.2</li></ul> |
 | **Content-Type** | The content type that is contained with the HTTP body. Valid content types. | application/ld+json |
 
 The HTTP body must contain a valid [Subscription](https://onerecord.iata.org/ns/api#Subscription) object in the format as specified by the Content-Type in the header.
@@ -378,6 +379,7 @@ The following HTTP status codes MUST be supported:
 | **401** | Not authenticated                                            | Error            |
 | **403** | Not authorized                                               | Error            |
 | **415** | Unsupported Content Type                                     | Error            |
+| **422**  | Unprocessable content. The request is syntactically valid, but the server cannot process it because one or more business rules or validation constraints were not satisfied.                  | Error |
 | **500** | Internal Server Error                                        | Error            |
 
 ## Security
@@ -393,8 +395,8 @@ Request:
 ```http
 POST /subscriptions HTTP/1.1
 Host: 1r.example.com
-Accept: application/ld+json; version=2.2.0
-Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.3.0
+Content-Type: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Subscription_example1.json"
 ```
@@ -405,7 +407,7 @@ Response:
 ```bash
 HTTP/1.1 201 Created
 Location: https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed
-Content-Type: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
 Type: https://onerecord.iata.org/ns/api#SubscriptionRequest
 ```
 

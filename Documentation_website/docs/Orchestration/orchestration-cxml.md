@@ -3,7 +3,7 @@
 # Mapping CXML messages with ONE Record
 
 ## Introduction
-We dedicate this section to the mapping between CXML messages (as per the last version on CXML Toolkit Edition 12) and ONE Record standard (as per last version endorsed by COTB - Data Model 3.2.0)
+We dedicate this section to the mapping between CXML messages (as per the last version on CXML Toolkit Edition 12) and ONE Record standard (as per last version endorsed by COTB - Data Model 3.3.0) 
 
 ### Objectives
 The transition from EDI to Data Sharing is highly dependent on the mapping between messages and ONE Record. Messaging standards (Cargo IMP and then Cargo XML) have been used extensively for the past decades by the industry. However messages in their current form have shown to be limited in terms of scalability with regards to upcoming regulations such as ACI/PLACI regimes.
@@ -19,12 +19,12 @@ The selected messages for mapping are the following:
 
 | Message | Message name | Message version | Comments |
 | --- | --- | --- | --- |
-| XFWB | XML Waybill Message [Download here](./assets/XFWB-5.0.0-mapping-3.2.xlsx){:download="XFWB-5.0.0-mapping-3.2.xlsx"} | 5.00 | 1st version |
-| XFZB | XML HouseWaybill Message [Download here](./assets/XFZB-4.0.0-mapping-3.2.xlsx){:download="XFZB-4.0.0-mapping-3.2.xlsx"} | 4.00 | 1st version |
-| XFHL | XML House Manifest Message [Download here](./assets/XFHL-3.0.0-mapping-3.2.xlsx){:download="XFHL-3.0.0-mapping-3.2.xlsx"} | 3.00 | 1st version |
-| XSDG | XML Shippers' Declaration for Dangerous Goods Message | 6.00 | To be assessed |
-| XFSU | XML Status Message | 6.00 | Ongoing |
-| XFFM | XML Flight Manifest Message | 4.00 | Ongoing |
+| XFWB | XML Waybill Message [Download here](./assets/Orchestration-1.2.0-XFWB-5.0.0-mapping.xlsx){:download="Orchestration-1.2.0-XFWB-5.0.0-mapping.xlsx"} | 5.00 | Version ready for production |
+| XFZB | XML HouseWaybill Message [Download here](./assets/Orchestration-1.2.0-XFZB-4.0.0-mapping.xlsx){:download="Orchestration-1.2.0-XFZB-4.0.0-mapping.xlsx"} | 4.00 | Version ready for production |
+| XFHL | XML House Manifest Message [Download here](./assets/Orchestration-1.2.0-XFHL-3.0.0-mapping.xlsx){:download="Orchestration-1.2.0-XFHL-3.0.0-mapping.xlsx"} | 3.00 | Version ready for production |
+| XSDG | XML Shippers' Declaration for Dangerous Goods Message | 6.00 | To be assessed - DG requirements integrated in 1R |
+| XFSU | XML Status Message [Download here](./assets/Orchestration-1.2.0-XFSU-6.0.0-mapping.xlsx){:download="Orchestration-1.2.0-XFSU-6.0.0-mapping.xlsx"} | 6.00 | Version ready for production |
+| XFFM | XML Flight Manifest Message | 4.00 | 1st draft ready - Needs to be reviewed |
 | XFBL | XML Freight Booked List Message | 3.00 | Ongoing |
 | XTMV | XML Transport Movement Message | 2.00 | To be assessed |
 
@@ -52,7 +52,7 @@ When first versions of ONE Record data model were created, restrictions **coming
 
 ## XFWB Mapping
 
-See dedicated page on XFWB mapping.
+See [dedicated page](./xfwb.md) on XFWB mapping.
 
 ## XFZB Mapping
 In its essence, XFZB is very similar to XFWB. `Waybill` object is the main focus and many details are from the `Shipment`(s) linked to it as well as the `TransportMovement`.
@@ -75,34 +75,8 @@ XSDG specifications, aligned with the Dangerous Goods Declaration (DGD) requirem
 The need for a proper XDSG mapping still needs to be assessed.
 
 ## XFSU Mapping
-### Proposed mechanism
-XFSU message is used to provide a Shipment Status update, discrepancy details or sometimes to provide complementary Customs information.
-In most cases, the Status updates is based on the usage of `LogisticsEvents` on the Shipment and/or the Pieces. The XFSU data fields are then a mix of Waybill, Shipment, Pieces and LogisticsEvent data in ONE Record realm.
 
-In case of **full shipment** status update, the `LogisticsEvents` can be added on the Shipment or on all the Pieces. Both scenarios are valid.
-
-#### Specific case of split shipment:
-With messaging standard, it is possible to transmit status update on a split shipment without the need to identify properly the pieces impacted. In this case the data transmitted can only be kept at Shipment level, however this pratice is contradictory with the piece level management design principle of ONE Record.
-To cope with that there are multiple possibilities to map XFSU with ONE Record, depending on stakeholder's capabilities on the operations side to identify impacted pieces of a shipment.
-
-- If pieces **cannot be** properly identified, recommendation would be to use `LogisticsEvent` on the Shipment, using the *LogisticsEvent#partialEventIndicator* to notify it applies to a split shipment. In this scenario it becomes complicated to provide the right level of information at the "AssociatedStatusConsignment" level as per the XFSU schema.
-- If pieces **can be** properly identified, it is recommended to use `LogisticsEvent` on the identified Pieces. The *LogisticsEvent#partialEventIndicator* can be used to notify it applies only to selected pieces and not to the whole shipment but all details at "AssociatedStatusConsignment" level are at Piece level in ONE Record realm.
-
-#### Involved parties
-When using XFSU, depending on the Status Code some parties need to be identified. By default the `LogisticsEvent` has the *recordActor*/*recordingOrganization* data object to identify the party creating the `LogisticsEvent`.
-
-With Ontology 3.2.0 an *involvedParty* data object (data type: `Party`) has been added to `LogisticsEvent` to allow for a proper mapping.
-
-Let's have a look at the various parties required for XFSU status codes and the proposed mapping:
-
-- Transferring party: usage of *recordActor*/*recordingOrganization*
-- receivingParty: usage of *involedParty* with *PartyRole* = "FX" (Current receiver)
-- notifiedParty: usage of *involedParty* with *PartyRole* = "NI" (Notify party)
-- deliveredToParty: usage of *involedParty* with *PartyRole* = "ST" (Ship to)
-
-Note that the Code List used refers to the [UN/CEFACT Party Role Code List](https://vocabulary.uncefact.org/PartyRoleCodeList).
-
-The mapping of XFSU message still needs to be fine tuned to take into account multiple scenarios.
+See [dedicated page](./xfsu.md) on XFSU mapping.
 
 ## XFFM Mapping
 The Flight Manifest represents an essential set of data that is today either a Paper document or a message (FFM or XFFM). It contains the details of cargo that is transported.

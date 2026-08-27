@@ -6,7 +6,7 @@ To enable asynchronous communication via HTTP, every ONE Record server MUST prov
 This chapter describes the the requirements of a Notifications API which a ONE Record server MUST implement (1) to receive information about new created or updated Logistics Objects, (2) or to receive status updates of action requests from other ONE Record nodes.
 
 For the former, the initialization of this data exchange channel is described in the [Subscription](subscriptions.md) chapter.
-The latter is set up when [notifyRequestStatusChange](https://onerecord.iata.org/ns/api#notifyRequestStatusChange) is set to `true` in the request for a Change, AccessDelegation , or Subscription.
+The latter is set up when [notifyRequestStatusChange](https://onerecord.iata.org/ns/api#notifyRequestStatusChange) is set to `true` in the request for a Change, AccessDelegation , Verification or Subscription.
 
 **Guidelines for Notifications in ONE Record:**
 
@@ -41,18 +41,26 @@ The properties and relationships to other data classes are visualized in the fol
         + hasError[]: Error [*]
         + isRequestedAt: xsd:dateTime         
         + isRequestedBy: Organization            
-        + isRevokedBy: Organization 
+        + isRevokedBy: Organization [0..1]
+        + isRevokedAt: xsd:dateTime [0..1] 
         + hasRequestStatus: RequestStatus = REQUEST_PENDING
-        + revokedAt: xsd:dateTime                 
+        + hasRequestStatusSince: xsd:dateTime
+        + hasRequestStatusHistory []: RequestStatusEntry [0..*]                  
     }
+
     ActionRequest <|-- AccessDelegationRequest
     ActionRequest <|-- ChangeRequest
     ActionRequest <|-- SubscriptionRequest
+    ActionRequest <|-- VerificationRequest
 
-    ActionRequest "1" --> "1..*" Organization : requestedBy    
+    ActionRequest "1" --> "0..*" Error     
+    ActionRequest "1" --> "1" Organization : requestedBy    
     ActionRequest --> RequestStatus                
-    ActionRequest "1" --> "1..*" Organization : revokedBy
+    ActionRequest "1" --> "0..1" Organization : revokedBy
+    ActionRequest "1" --> "0..*" RequestStatusEntry : hasRequestStatusHistory
 
+    class RequestStatusEntry{
+    }
     class Notification{
         + hasChangedProperty[]: xsd:anyURI [*]        
         + hasEventType: NotificationEventType
@@ -61,6 +69,7 @@ The properties and relationships to other data classes are visualized in the fol
         + hasLogisticsObjectType: xsd:anyURI [0..1] 
         + hasLogisticsEvent[]: LogisticsEvent [*]    
     }
+
     Notification "1"--> "0..1" LogisticsObject
     Notification "1" --> "1" NotificationEventType
     Notification "1" --> "0..1" ActionRequest 
@@ -170,8 +179,8 @@ Request:
 
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example1.json"
 ```
@@ -189,8 +198,8 @@ because `sendLogisticsObjectBody` in Subscription is set to `True`.
 
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example2.json"
 ```
@@ -208,8 +217,8 @@ The following example shows a `LOGISTICS_OBJECT_UPDATED` Notification without th
 because `sendLogisticsObjectBody` in Subscription is set to `False`.
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example3.json"
 ```
@@ -230,8 +239,8 @@ The notification will include a link to the Logistics Event via the defined [has
 
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example4.json"
 ```
@@ -248,8 +257,8 @@ The following example shows a `CHANGE_REQUEST_ACCEPTED` Notification after the C
 
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example5.json"
 ```
@@ -266,8 +275,8 @@ The following example demonstrates how to notify the availability of a new Logis
 
 ```http
 POST /notifications HTTP/1.1
-Content-Type: application/ld+json; version=2.2.0
-Accept: application/ld+json; version=2.2.0
+Content-Type: application/ld+json; version=2.3.0
+Accept: application/ld+json; version=2.3.0
 
 --8<-- "API-Security/examples/Notification_example6.json"
 ```
